@@ -67,6 +67,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 16px auto;
         background: white;
       }
+      
+      paper-material.post {
+         -webkit-animation: dropGift .3s;
+         animation: dropGift .3s;   
+      }
+      
+      // http://rhumaric.com/2013/12/apparition-and-css-animations/
+      
+      @keyframes dropGift{
+ 
+        0% {
+          -webkit-transform: translateY(-200px);
+          transform: translateY(-200px);
+        }
+    
+        75% {
+          -webkit-transform: translateY(5px);
+          transform: translateY(5px);
+        }
+  
+      }
+
+      @-webkit-keyframes dropGift{
+ 
+        0% {
+          -webkit-transform: translateY(-200px);
+          transform: translateY(-200px);
+        }
+  
+        75% {
+          -webkit-transform: translateY(5px);
+          transform: translateY(5px);
+        }
+      }
 
       paper-menu iron-icon {
         margin-right: 33px;

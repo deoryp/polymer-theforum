@@ -3,33 +3,13 @@
 <dom-module id="theforum-post">
   <template>
     <style>
-    .heading {
-      width: 100%;
-      text-align: left;
-    }
-    .content {
-      padding: 15px;
-      border-top: none;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-    
     </style>
     <h2>{{post.title}}</h2>
-    <a aria-expanded$="[[isExpanded(post.fresh)]]" aria-controls="collapse-post" onclick="toggle('#collapse-post')">
-      <theforum-post-header
-        photo="{{post.author.photo}}"
-        name="{{post.author.name}}"
-        at="{{post.created}}"
-        >
-        </theforum-post-header>
-    </a>
-    <iron-collapse id="collapse-post" opened="{{post.fresh}}">
-      <theforum-post-body
-        markdown="{{post.markdown}}"
-        >
-      </theforum-post-body>
-    </iron-collapse>
+    <theforum-post-entry post="{{post}}"></theforum-post-entry>
+    
+    <template is="dom-repeat" items="{{post.reply}}">
+      <theforum-post-entry post="{{item}}"></theforum-post-entry>
+    </template>
     
   </template>
   <script>
@@ -42,19 +22,8 @@
         },
       },
       _postChanged: function(newValue, oldValue) {
-        console.log('post changed. ' + this);
-      },
-      attached: function() {
-      },
-      isExpanded: function(opened) {
-        return String(opened);
+        // check it.
       }
     });
-    function toggle(selector) {
-      document.querySelector(selector).toggle();
-    }
-    
-    
-
   </script>
 </dom-module>

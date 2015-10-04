@@ -26,11 +26,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     // Routes
     page('/', scrollToTop, function() {
-      app.route = 'home';
+      app.route = 'fresh';
     });
 
-    page('/users', scrollToTop, function() {
-      app.route = 'users';
+    page('/general', scrollToTop, function() {
+      app.route = 'general';
+    });
+
+    page('/media', scrollToTop, function() {
+      app.route = 'media';
+    });
+    
+    page('/events', scrollToTop, function() {
+      app.route = 'events';
     });
 
     page('/users/:name', scrollToTop, function(data) {

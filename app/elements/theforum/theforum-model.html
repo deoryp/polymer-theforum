@@ -5,25 +5,94 @@
     Polymer({
       is: 'theforum-model',
       properties: {
-        post: {
-          type: Object,
-          value: {},
-          notify: true
+        forum: String,
+        posts: {
+          type: Array,
+          notify: true,
+          value: []
         }
       },
       attached: function() {
-        this.post = {
-          id: 'abc',
+        
+        if (this.forum === 'general') {
+        
+        this.push('posts', {
+          _id: 'abc',
           author: {
             photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
             name: 'Scott Nichols'
           },
           title: 'Some Title here...',
           markdown: '```here is some markdown for ya```',
-          created: 'Sat Oct 03 2015 11:49:50 GMT-0700 (PDT)'
-        };
+          created: 'Sat Oct 03 2015 11:49:50 GMT-0700 (PDT)',
+          fresh: false,
+          reply: [
+            {
+              _id: '123',
+              author: {
+                photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
+                name: 'Scott Nichols'
+              },
+              markdown: 'This is a reply.',
+              created: 'Sat Oct 04 2015 11:49:50 GMT-0700 (PDT)',
+              fresh: true,
+            }
+          ]
+        });
+        
+        var that = this;
+        setTimeout(function() {
+          that.push('posts', {
+            _id: 'abc',
+            author: {
+              photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
+              name: 'Scott Nichols'
+            },
+            title: 'Newer Post',
+            markdown: '```here is some markdown for ya```',
+            created: 'Sat Oct 03 2015 11:49:50 GMT-0700 (PDT)',
+            fresh: true,
+            reply: [
+              {
+                _id: '123',
+                author: {
+                  photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
+                  name: 'Scott Nichols'
+                },
+                markdown: 'This is a reply.',
+                created: 'Sat Oct 04 2015 11:49:50 GMT-0700 (PDT)',
+                fresh: true,
+              }
+            ]
+          });
+        }, 2000);
+      } else {
+        this.push('posts', {
+          _id: 'abc',
+          author: {
+            photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
+            name: 'Scott Nichols'
+          },
+          title: 'Some Other title here!!',
+          markdown: '```here is some markdown for ya```',
+          created: 'Sat Oct 03 2015 11:49:50 GMT-0700 (PDT)',
+          fresh: false,
+          reply: [
+            {
+              _id: '123',
+              author: {
+                photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg',
+                name: 'Scott Nichols'
+              },
+              markdown: 'This is a reply.',
+              created: 'Sat Oct 04 2015 11:49:50 GMT-0700 (PDT)',
+              fresh: true,
+            }
+          ]
+        });
       }
       
+      }
     });
   </script>
 </dom-module>
