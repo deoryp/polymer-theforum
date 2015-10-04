@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-post">
+  <template>
+    <style>
+    .heading {
+      width: 100%;
+      text-align: left;
+    }
+    .content {
+      padding: 15px;
+      border-top: none;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    </style>
+    
+    <p>{{post}}</p>
+
+    <h2>{{post.title}}</h2>
+    <a aria-expanded$="[[isExpanded(post.fresh)]]" aria-controls="collapse-{{post.id}}" onclick="toggle('#collapse-{{post.id}}')">
+      <theforum-post-header
+        photo="{{post.author.photo}}"
+        name="{{post.author.name}}"
+        at="{{post.created}}"
+        >
+        </theforum-post-header>
+    </a>
+    <iron-collapse id="collapse-{{post.id}}" opened="{{post.fresh}}">
+      <theforum-post-body
+        markdown="{{post.markdown}}"
+        >
+      </theforum-post-body>
+    </iron-collapse>
+    
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-post',
+      properties: {
+        post: {
+          type: Object,
+          observer: '_postChanged'
+        },
+      },
+      _postChanged: function(newValue, oldValue) {
+        console.log('post changed. ' + this);
+      },
+      attached: function() {
+//        window.forum_view = this;
+//        document.querySelector('template[is=theforum-post]').isExpanded = function(opened) {
+//          return String(opened);
+//        };
+      }
+    });
+    function toggle(selector) {
+//      document.querySelector(selector).toggle();
+    }
+    
+
+  </script>
+</dom-module>

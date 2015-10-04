@@ -1,0 +1,22 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-post-body">
+  <template>
+    <style>
+    </style>
+    <div>
+      <marked-element markdown="{{markdown}}">
+        <div class="markdown-html"></div>
+      </marked-element>
+    </div>
+
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-post-body',
+      properties: {
+        markdown: String
+      }
+    });
+  </script>
+</dom-module>

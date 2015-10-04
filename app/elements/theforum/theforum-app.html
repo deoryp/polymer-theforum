@@ -1,0 +1,170 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-app">
+  <template>
+    
+    
+    
+    <paper-drawer-panel id="paperDrawerPanel">
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <!--
+        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+        -->
+        
+        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
+          <paper-submenu opened="true">
+            <paper-item class="menu-trigger">Topics</paper-item>
+            <paper-menu class="menu-content sublist">
+              <a data-route="home" href="/" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>Home</span>
+              </a>
+
+              <a data-route="users" href="/users" on-click="onDataRouteClick">
+                <iron-icon icon="info"></iron-icon>
+                <span>Users</span>
+              </a>
+
+              <a data-route="contact" href="/contact" on-click="onDataRouteClick">
+                <iron-icon icon="mail"></iron-icon>
+                <span>Contact</span>
+              </a>
+            </paper-menu>
+          </paper-submenu>
+          <paper-submenu>
+            <paper-item class="menu-trigger">Faves</paper-item>
+            <paper-menu class="menu-content sublist">
+              <a data-route="home" href="/" on-click="onDataRouteClick">
+                <iron-icon icon="home"></iron-icon>
+                <span>Home1</span>
+              </a>
+
+              <a data-route="users" href="/users" on-click="onDataRouteClick">
+                <iron-icon icon="info"></iron-icon>
+                <span>Users1</span>
+              </a>
+
+              <a data-route="contact" href="/contact" on-click="onDataRouteClick">
+                <iron-icon icon="mail"></iron-icon>
+                <span>Contact1</span>
+              </a>
+
+            </paper-menu>
+          </paper-submenu>
+          <paper-submenu disabled>
+            <paper-item class="menu-trigger">Unavailable</paper-item>
+            <paper-menu class="menu-content sublist" multi>
+              <paper-item>Unavailable 1</paper-item>
+              <paper-item>Unavailable 2</paper-item>
+            </paper-menu>
+          </paper-submenu>
+        </paper-menu>
+
+      </paper-scroll-header-panel>
+
+      <!-- Main Area -->
+      <paper-scroll-header-panel main condenses keep-condensed-header>
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar" class="tall">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <span class="flex"></span>
+
+          <!-- Toolbar icons -->
+          <paper-icon-button icon="refresh"></paper-icon-button>
+          <paper-icon-button icon="search"></paper-icon-button>
+
+          <!-- Application name -->
+          <div class="middle middle-container center horizontal layout">
+            <div class="app-name">Polymer Starter Kit</div>
+          </div>
+
+          <!-- Application sub title -->
+          <div class="bottom bottom-container center horizontal layout">
+            <div class="bottom-title paper-font-subhead">The future of the web today</div>
+          </div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+            <section data-route="home">
+          
+              <paper-material elevation="1">
+                <theforum-model post="{{xxx}}"></theforum-model>
+                <theforum-post post="{{xxx}}"></theforum-post>
+              </paper-material>
+          
+              <paper-material elevation="1">
+                <my-greeting></my-greeting>
+                <div class="layout horizontal wrap">
+              
+                <theforum-author
+                  img="http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg"
+                  name="Scott Nichols">
+                </theforum-author>
+            
+                <my-list></my-list>
+            
+                  <theforum-time at="Sat Oct 03 2015 11:49:50 GMT-0700 (PDT)"></theforum-time>                
+            
+                </div>
+                <p class="paper-font-subhead">You now have:</p>
+                <my-list></my-list>
+
+                <p class="paper-font-body2">Looking for more Web App layouts? Check out our <a href="https://github.com/PolymerElements/app-layout-templates">layouts</a> collection. You can also <a href="http://polymerelements.github.io/app-layout-templates/">preview</a> them live.</p>
+              </paper-material>
+              <paper-material elevation="1">
+                <p class="paper-font-body2">This is another card.</p>
+              </paper-material>
+
+            </section>
+
+            <section data-route="users">
+              <paper-material elevation="1">
+                <h2 class="page-title">Users</h2>
+                <p>This is the users section</p>
+                <a href="/users/Rob">Rob</a>
+              </paper-material>
+            </section>
+
+            <section data-route="user-info">
+              <paper-material elevation="1">
+                <h2 class="page-title">
+                User:<span>{{params.name}}</span>
+                </h2>
+                <div>This is <span>{{params.name}}</span>'s section</div>
+              </paper-material>
+            </section>
+
+            <section data-route="contact">
+              <paper-material elevation="1">
+                <h2 class="page-title">Contact</h2>
+                <p>This is the contact section</p>
+              </paper-material>
+            </section>
+
+          </iron-pages>
+        </div>
+        
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+    
+    
+  </template>
+  <script>
+    Polymer({
+      is: 'theforum-app'
+    });
+  </script>
+</dom-module>
