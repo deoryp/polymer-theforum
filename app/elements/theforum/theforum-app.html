@@ -2,8 +2,8 @@
 
 <dom-module id="theforum-app">
   <template>
-    
-    
+    <style include="shared-styles"></style>
+    <style include="theforum-theme"></style>
     
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -15,10 +15,6 @@
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <!--
-        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-        -->
-        
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <paper-submenu opened="true">
             <paper-item class="menu-trigger">Topics</paper-item>
@@ -102,7 +98,7 @@
           
               <paper-material elevation="1">
                 <theforum-model post="{{xxx}}"></theforum-model>
-                <theforum-post post="{{xxx}}"></theforum-post>
+                <theforum-post post="{{xxx::change}}"></theforum-post>
               </paper-material>
           
               <paper-material elevation="1">

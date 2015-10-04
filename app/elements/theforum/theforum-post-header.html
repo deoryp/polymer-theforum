@@ -68,14 +68,10 @@
         at: Date
       },
       _freshChanged: function(newValue, oldValue) {
-        
-        
         this.toggleClass('fresh', newValue);
-        //debugger;
-        console.log('fresh changed. ' + this);
       },
       prettyDate: function(date) {
-        //debugger;
+        date = new Date(date);
         return date.toDateString(); // TODO make this mo better
       }
     });
