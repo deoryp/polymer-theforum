@@ -2,50 +2,19 @@
 
 <dom-module id="theforum-post-message">
   <template>
-    <style>
-    </style>
-    <iron-collapse opened="{{opened}}">
-      <div>
-        <marked-element markdown="{{markdown}}">
-          <div class="markdown-html"></div>
-        </marked-element>
-      </div>
-    </iron-collapse>
+    <div>
+      <marked-element markdown="{{markdown}}">
+        <div class="markdown-html"></div>
+      </marked-element>
+    </div>
   </template>
   <script>
   Polymer({
       is: 'theforum-post-message',
       properties: {
-        markdown: String,
-        opened: {
-          type: Boolean,
-          value: false,
-          notify: true
-        },
-        fresh: {
-          type: Boolean,
-          observer: '_freshChanged'
-        }
-      },
-      _freshChanged: function(newValue, oldValue) {
-        // Only auto open on first value.
-        if (typeof oldValue === 'undefined') {
-          if (this.fresh) {
-            this.opened = true;
-          } else {
-            this.opened = false;
-          }
-        }
-      },
-      toggle: function() {
-        this.opened = !this.opened;
-      },
-      show: function() {
-        this.opened = true;
-      },
-      hide: function() {
-        this.opened = false;
+        markdown: String
       }
     });
   </script>
 </dom-module>
+

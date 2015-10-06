@@ -15,26 +15,33 @@
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <paper-submenu opened="true">
-            <paper-item class="menu-trigger">Topics</paper-item>
-            <paper-menu class="menu-content sublist">
-              <a data-route="general" href="/general" on-click="onDataRouteClick">
-                <iron-icon icon="home"></iron-icon>
-                <span>General</span>
-              </a>
+        <paper-menu attr-for-selected="data-route" selected="[[route]]">
 
-              <a data-route="users" href="/media" on-click="onDataRouteClick">
-                <iron-icon icon="info"></iron-icon>
-                <span>Media</span>
-              </a>
+          <a data-route="fresh" href="/" on-click="onDataRouteClick">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+          
+          <a data-route="general" href="/general" on-click="onDataRouteClick">
+            <iron-icon icon="question-answer"></iron-icon>
+            <span>General</span>
+          </a>
 
-              <a data-route="events" href="/events" on-click="onDataRouteClick">
-                <iron-icon icon="mail"></iron-icon>
-                <span>Events</span>
-              </a>
-            </paper-menu>
-          </paper-submenu>
+          <a data-route="media" href="/media" on-click="onDataRouteClick">
+            <iron-icon icon="theaters"></iron-icon>
+            <span>Media</span>
+          </a>
+
+          <a disabled data-route="events" href="/events" on-click="onDataRouteClick">
+            <iron-icon icon="event"></iron-icon>
+            <span>Events</span>
+          </a>
+
+          <a disabled data-route="contacts" href="/events" on-click="onDataRouteClick">
+            <iron-icon icon="communication:contacts"></iron-icon>
+            <span>Rolodex</span>
+          </a>
+          
         </paper-menu>
 
       </paper-scroll-header-panel>
@@ -49,10 +56,12 @@
 
           <!-- Toolbar icons -->
           <paper-icon-button icon="refresh"></paper-icon-button>
+          
+          <img class="circle" src="{{user.photo}}" alt="{{user.name}}">
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name">THE FORUM</div>
+            <div class="app-name">THE FORUM v4.1</div>
           </div>
 
           <!-- Application sub title -->
@@ -73,19 +82,19 @@
             </section>
             
             <section data-route="general">
-              <theforum-model forum="general" posts="{{generalPosts}}"></theforum-model>
-              <template is="dom-repeat" items="{{generalPosts}}" sort="sortPost">
-                <paper-material animated elevation="1" class="post">
-                  <theforum-post post="{{item}}"></theforum-post>
+              <theforum-model forum="general" threads="{{generalThreads}}"></theforum-model>
+              <template is="dom-repeat" items="{{generalThreads}}" sort="sortThread">
+                <paper-material animated elevation="1" class="thread">
+                  <theforum-thread user="{{user}}" thread="{{item}}"></theforum-thread>
                 </paper-material>  
               </template>
             </section>
 
             <section data-route="media">
-              <theforum-model forum="media" posts="{{mediaPosts}}"></theforum-model>
-              <template is="dom-repeat" items="{{mediaPosts}}">
-                <paper-material animated elevation="1" class="post">
-                  <theforum-post post="{{item}}"></theforum-post>
+              <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
+              <template is="dom-repeat" items="{{mediaThreads}}">
+                <paper-material animated elevation="1" class="thread">
+                  <theforum-thread thread="{{item}}"></theforum-thread>
                 </paper-material>  
               </template>
             </section>
@@ -105,12 +114,20 @@
   <script>
     Polymer({
       is: 'theforum-app',
-      sortPost: function(a, b) {
+      sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
         var bAt = new Date(b.updated || b.modifed || b.created).getTime();
         if (aAt === bAt) return 0;
         return aAt < bAt ? -1 : 1;
+      },
+      ready: function () {
+        this.user = {
+          photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg?sz=24',
+          name: 'Scott Nichols'
+        };
       }
     });
+    
+    
   </script>
 </dom-module>

@@ -1,0 +1,34 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-reply-compose">
+  <template>
+    <style>
+      img.author {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+      }
+    </style>
+    <div class="horizontal layout center">
+      <img class="author" src="{{user.photo}}" alt="{{user.name}}">
+      <paper-textarea label="Reply..." class="flex center"></paper-textarea>
+      <paper-icon-button icon="reply-all" on-click="reply"></paper-icon-button>
+    </div>
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-reply-compose',
+      properties: {
+        thread: {
+          type: Object
+        },
+        user: {
+          type: Object
+        }
+      },
+      reply: function() {
+        console.log('yar');
+      }
+    });
+  </script>
+</dom-module>

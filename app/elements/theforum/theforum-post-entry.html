@@ -2,21 +2,20 @@
 
 <dom-module id="theforum-post-entry">
   <template>
-    <a on-click="toggle">
-      <theforum-post-author
-        photo="{{post.author.photo}}"
-        name="{{post.author.name}}"
-        at="{{post.created}}"
-        fresh$="{{post.fresh}}"
-        >
-      </theforum-post-author>
-    </a>
-    <theforum-post-message 
-      id="collapse-post" 
-      markdown="{{post.markdown}}" 
+
+    <theforum-post-author
+      photo="{{post.author.photo}}"
+      name="{{post.author.name}}"
+      at="{{post.created}}"
       fresh$="{{post.fresh}}"
       >
-    </theforum-post-message>
+    </theforum-post-author>
+
+    <div>
+      <marked-element markdown="{{post.markdown}}">
+        <div class="markdown-html"></div>
+      </marked-element>
+    </div>
   </template>
   <script>
   Polymer({

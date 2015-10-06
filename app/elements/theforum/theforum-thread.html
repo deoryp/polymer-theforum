@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-thread">
+  <template>
+    <style include="theforum-theme"></style>
+    <style>
+    
+      .replies {
+        border-width: 1px;
+        border-color: #eaeaea;
+        border-bottom-color: #eaeaea;
+        border-top-style: solid;
+        border-bottom-style: solid;
+        padding-top: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+      
+    </style>
+    <h2>{{thread.title}}</h2>
+    <theforum-post post="{{thread}}" show="{{opened}}"></theforum-post>
+    
+    <iron-collapse opened="{{opened}}">
+      <div class="replies">
+        <template is="dom-repeat" items="{{thread.reply}}">
+          <theforum-reply reply="{{item}}"></theforum-reply>
+        </template>
+      </div>
+      <theforum-reply-compose to="{{post}}" user="{{user}}"></theforum-reply-compose>
+    </iron-collapse>
+    
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-thread',
+      properties: {
+        user: {
+          type: Object
+        },
+        thread: {
+          type: Object,
+          observer: '_threadChanged'
+        }
+      },
+      _threadChanged: function(newValue, oldValue) {
+        // check it.
+      }
+    });
+  </script>
+</dom-module>
+
+
+
+<!-- 
+
+compose a message:
+
+a thread holds a post and replies.
+
+a post is an author, title, a time and a message
+
+a reply is an author, and a time
+
+-->
