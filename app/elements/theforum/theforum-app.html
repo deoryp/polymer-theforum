@@ -57,7 +57,7 @@
           <!-- Toolbar icons -->
           <paper-icon-button icon="refresh"></paper-icon-button>
           
-          <img class="circle" src="{{user.photo}}" alt="{{user.name}}">
+          <theforum-user me="{{me}}"></theforum-user>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -78,24 +78,24 @@
             <section data-route="fresh">
               <paper-material animated elevation="1">
                 <h2 class="page-title">This will be the fresh area</h2>
+                
+                
+                <p>{{me}}</p>
+                
               </paper-material>
             </section>
             
             <section data-route="general">
               <theforum-model forum="general" threads="{{generalThreads}}"></theforum-model>
               <template is="dom-repeat" items="{{generalThreads}}" sort="sortThread">
-                <paper-material animated elevation="1" class="thread">
-                  <theforum-thread user="{{user}}" thread="{{item}}"></theforum-thread>
-                </paper-material>  
+                <theforum-thread user="{{user}}" thread="{{item}}"></theforum-thread>
               </template>
             </section>
 
             <section data-route="media">
               <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
               <template is="dom-repeat" items="{{mediaThreads}}">
-                <paper-material animated elevation="1" class="thread">
-                  <theforum-thread thread="{{item}}"></theforum-thread>
-                </paper-material>  
+                <theforum-thread thread="{{item}}"></theforum-thread>
               </template>
             </section>
 

@@ -1,0 +1,109 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-user">
+  <template>
+    <style include="theforum-theme"></style>
+    
+    <template is="dom-if" if="{{!initialized}}">
+      <iron-icon icon="account-circle"></iron-icon>
+    </template>
+    
+    <template is="dom-if" if="{{!authenticated}}">
+      <button on-click="login">Login to Google</button></p>
+    </template>
+    
+    <template is="dom-if" if="{{authenticated}}">
+      <img  
+        class="circle" 
+        src="{{me.google.image.url}}" 
+        alt="{{user.name}}">
+    </template>
+
+    <iron-ajax
+        auto
+        url="/api/users/me"
+        handle-as="json"
+        on-response="handleMe"
+        headers='{{headers()}}'
+        debounce-duration="300"></iron-ajax>
+    
+  </template>
+  <script>
+  
+  function readCookie(name) {
+  	var nameEQ = name + "=";
+  	var ca = document.cookie.split(';');
+  	for(var i=0;i < ca.length;i++) {
+  		var c = ca[i];
+  		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+  		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  	}
+  	return null;
+  }
+  
+  Polymer({
+      is: 'theforum-user',
+      properties: {
+        me: {
+          type: Object,
+          notify: true,
+          observer: '_meChanged'
+        },
+        authenticated: {
+          type: Boolean,
+          notify: true
+        },
+        initialized: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+      },
+      headers: function() {
+        var token = readCookie('token');
+        token = decodeURIComponent(token);
+        token = token.substring(1, token.length - 1);
+        return {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      },
+//      authenticated: false,
+//      unauthenticated: true,
+      _meChanged: function(newValue, oldValue) {
+        this.initialized = true;
+        this.authenticated = (typeof this.me !== 'undefined');
+      },
+      handleMe: function(response) {
+        var me = response.srcElement.lastResponse;
+        var url = me.google.image.url;
+        me.google.image.url = url.substring(0, url.length - 5) + 'sz=24';
+        this.me = me;
+      },
+      login: function() {
+        window.location  = '/auth/google';
+      },
+      handleSignIn: function(response) {
+        this.status = 'Signin granted';
+        console.log('[Aware] Signin Response', response);
+        this.userName = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+      },
+      handleOffline: function(response) {
+        this.offlineCode = response.detail.code;
+      },
+      handleSignOut: function(response) {
+        this.status = 'Signed out';
+        console.log('[Aware] Signout Response', response);
+        this.userName = 'N/A';
+      },
+      disconnect: function() {
+        var b = document.querySelector('google-signin');
+        var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
+        if (currentUser) {
+          currentUser.disconnect();
+        }
+        gapi.auth2.getAuthInstance().signOut();
+      }
+    });
+  </script>
+</dom-module>

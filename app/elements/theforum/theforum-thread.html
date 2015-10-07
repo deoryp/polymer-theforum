@@ -17,18 +17,21 @@
       }
       
     </style>
-    <h2>{{thread.title}}</h2>
-    <theforum-post post="{{thread}}" show="{{opened}}"></theforum-post>
+    <paper-material animated elevation="{{elevation}}" class="thread" 
+        on-mouseover='onHovered' 
+        on-mouseout='onUnhovered'>
+      <h2>{{thread.title}}</h2>
+      <theforum-post post="{{thread}}" show="{{opened}}"></theforum-post>
     
-    <iron-collapse opened="{{opened}}">
-      <div class="replies">
-        <template is="dom-repeat" items="{{thread.reply}}">
-          <theforum-reply reply="{{item}}"></theforum-reply>
-        </template>
-      </div>
-      <theforum-reply-compose to="{{post}}" user="{{user}}"></theforum-reply-compose>
-    </iron-collapse>
-    
+      <iron-collapse opened="{{opened}}">
+        <div class="replies">
+          <template is="dom-repeat" items="{{thread.reply}}">
+            <theforum-reply reply="{{item}}"></theforum-reply>
+          </template>
+        </div>
+        <theforum-reply-compose to="{{post}}" user="{{user}}"></theforum-reply-compose>
+      </iron-collapse>
+    </paper-material>  
   </template>
   <script>
   Polymer({
@@ -40,7 +43,15 @@
         thread: {
           type: Object,
           observer: '_threadChanged'
-        }
+        },
+        
+      },
+      elevation: 1,
+      onHovered: function() {
+        this.elevation = 3;
+      },
+      onUnhovered: function() {
+        this.elevation = 1;
       },
       _threadChanged: function(newValue, oldValue) {
         // check it.
