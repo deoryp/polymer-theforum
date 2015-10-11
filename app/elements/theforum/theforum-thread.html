@@ -34,8 +34,48 @@
     </paper-material>  
   </template>
   <script>
+  
+  // neat.
+  
+  HighlightBehavior = {
+
+    properties: {
+      isHighlighted: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        observer: '_highlightChanged'
+      }
+    },
+  
+    listeners: {
+      click: '_toggleHighlight'
+    },
+  
+    created: function() {
+      console.log('Highlighting for ', this, 'enabled!');
+    },
+
+    _toggleHighlight: function() {
+      this.isHighlighted = !this.isHighlighted;
+    },
+  
+    _highlightChanged_simple: function(value) {
+      this.toggleClass('highlighted', value);
+      
+    },
+    
+    _highlightChanged: function() {
+      this.classList.add('highlight');
+      this.async(function() {
+        this.classList.remove('highlight');
+      }, 300);
+    }
+  };
+  
   Polymer({
       is: 'theforum-thread',
+      behaviors: [HighlightBehavior],
       properties: {
         user: {
           type: Object

@@ -2,6 +2,23 @@
 
 <dom-module id="theforum-user">
   <template>
+    <style include="theforum-theme"></style>
+    
+    <template is="dom-if" if="{{!initialized}}">
+      <iron-icon icon="account-circle"></iron-icon>
+    </template>
+    
+    <template is="dom-if" if="{{!authenticated}}">
+      <button on-click="login">Login to Google</button></p>
+    </template>
+    
+    <template is="dom-if" if="{{authenticated}}">
+      <img  
+        class="circle" 
+        src="{{me.google.image.url}}" 
+        alt="{{user.name}}">
+    </template>
+
     <iron-ajax
         auto
         url="/api/users/me"
@@ -42,12 +59,6 @@
           notify: true
         },
       },
-      
-      observers: [
-        '_googleChanged(me.google)',
-        '_userChanged(me.*)'
-      ],
-        
       headers: function() {
         var token = readCookie('token');
         token = decodeURIComponent(token);
@@ -62,20 +73,6 @@
       _meChanged: function(newValue, oldValue) {
         this.initialized = true;
         this.authenticated = (typeof this.me !== 'undefined');
-      },
-      _googleChanged: function(google) {
-        // yada
-      },
-      _userChanged: function(changeRecord) {
-        /*
-          changeRecord. has:
-          path. Path to the property that changed.
-          value. New value of the path that changed.
-          base. The object matching the non-wildcard portion of the path.
-        */
-        // also look at https://www.polymer-project.org/1.0/docs/devguide/properties.html#array-observation for array.
-        
-        
       },
       handleMe: function(response) {
         var me = response.srcElement.lastResponse;
