@@ -16,6 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // client-side router inspired by the Express router
     // More info: https://visionmedia.github.io/page.js/
 
+    var app = document.querySelector('theforum-app');
+
     // Middleware
     function scrollToTop(ctx, next) {
       app.scrollPageToTop();
@@ -24,11 +26,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     // Routes
     page('/', scrollToTop, function() {
-      app.route = 'home';
+      app.route = 'fresh';
     });
 
-    page('/users', scrollToTop, function() {
-      app.route = 'users';
+    page('/general', scrollToTop, function() {
+      app.route = 'general';
+    });
+
+    page('/media', scrollToTop, function() {
+      app.route = 'media';
+    });
+    
+    page('/events', scrollToTop, function() {
+      app.route = 'events';
     });
 
     page('/users/:name', scrollToTop, function(data) {

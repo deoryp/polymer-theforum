@@ -1,0 +1,133 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-app">
+  <template>
+    <style include="shared-styles"></style>
+    <style include="theforum-theme"></style>
+    
+    <paper-drawer-panel id="paperDrawerPanel">
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu attr-for-selected="data-route" selected="[[route]]">
+
+          <a data-route="fresh" href="/" on-click="onDataRouteClick">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+          
+          <a data-route="general" href="/general" on-click="onDataRouteClick">
+            <iron-icon icon="question-answer"></iron-icon>
+            <span>General</span>
+          </a>
+
+          <a data-route="media" href="/media" on-click="onDataRouteClick">
+            <iron-icon icon="theaters"></iron-icon>
+            <span>Media</span>
+          </a>
+
+          <a disabled data-route="events" href="/events" on-click="onDataRouteClick">
+            <iron-icon icon="event"></iron-icon>
+            <span>Events</span>
+          </a>
+
+          <a disabled data-route="contacts" href="/events" on-click="onDataRouteClick">
+            <iron-icon icon="communication:contacts"></iron-icon>
+            <span>Rolodex</span>
+          </a>
+          
+        </paper-menu>
+
+      </paper-scroll-header-panel>
+
+      <!-- Main Area -->
+      <paper-scroll-header-panel main condenses keep-condensed-header>
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar" class="tall">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <span class="flex"></span>
+
+          <!-- Toolbar icons -->
+          <paper-icon-button icon="refresh"></paper-icon-button>
+          
+          <theforum-user me="{{me}}"></theforum-user>
+
+          <!-- Application name -->
+          <div class="middle middle-container center horizontal layout">
+            <div class="app-name">THE FORUM v4.1</div>
+          </div>
+
+          <!-- Application sub title -->
+          <div class="bottom bottom-container center horizontal layout">
+            <div class="bottom-title paper-font-subhead">This is where we hang out.</div>
+          </div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+            <section data-route="fresh">
+              <paper-material animated elevation="1">
+                <h2 class="page-title">This will be the fresh area</h2>
+                
+                
+                <p>{{me}}</p>
+                
+              </paper-material>
+            </section>
+            
+            <section data-route="general">
+              <theforum-model forum="general" threads="{{generalThreads}}"></theforum-model>
+              <template is="dom-repeat" items="{{generalThreads}}" sort="sortThread">
+                <theforum-thread user="{{user}}" thread="{{item}}"></theforum-thread>
+              </template>
+            </section>
+
+            <section data-route="media">
+              <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
+              <template is="dom-repeat" items="{{mediaThreads}}">
+                <theforum-thread thread="{{item}}"></theforum-thread>
+              </template>
+            </section>
+
+            <section data-route="events">
+              <paper-material elevation="1">
+                <h2 class="page-title">EVENTS!!</h2>
+              </paper-material>
+            </section>
+
+          </iron-pages>
+        </div>
+        
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>    
+  </template>
+  <script>
+    Polymer({
+      is: 'theforum-app',
+      sortThread: function(a, b) {
+        var aAt = new Date(a.updated || a.modifed || a.created).getTime();
+        var bAt = new Date(b.updated || b.modifed || b.created).getTime();
+        if (aAt === bAt) return 0;
+        return aAt < bAt ? -1 : 1;
+      },
+      ready: function () {
+        this.user = {
+          photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg?sz=24',
+          name: 'Scott Nichols'
+        };
+      }
+    });
+    
+    
+  </script>
+</dom-module>

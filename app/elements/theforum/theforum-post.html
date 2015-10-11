@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-post">
+  <template>
+    <style>
+      paper-icon-button {
+        padding: 0px;
+        border-radius: 3px;
+        margin-left: 10px;
+      
+      }
+    
+      paper-icon-button::shadow #ripple {
+        color: blue;
+      }
+    
+      .with-badge > paper-badge {
+        --paper-badge-margin-left: 0px;
+        --paper-badge-margin-bottom: 0px;
+      }
+    </style>
+    <theforum-post-author
+      photo="{{post.author.photo}}"
+      name="{{post.author.name}}"
+      at="{{post.created}}"
+      fresh$="{{post.fresh}}"
+      >
+    </theforum-post-author>
+
+    <div class="horizontal layout">
+      <div class="flex">
+        <marked-element markdown="{{post.markdown}}">
+          <div class="markdown-html"></div>
+        </marked-element>
+      </div>
+      <div class="horizontal end layout">
+        <a on-click="toggle" class="with-badge">
+          <paper-icon-button icon="communication:comment"></paper-icon-button>
+          <paper-badge label="3"></paper-badge>
+        </a>
+      </div>
+    </div>
+
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-post',
+      properties: {
+        post: {
+          type: Object,
+          observer: '_postChanged'
+        },
+        show: {
+          type: Boolean,
+          value: true,
+          notify: true
+        }
+      },
+      _postChanged: function(newValue, oldValue) {
+        console.log(newValue)
+        // check it.
+      },
+      toggle: function() {
+        this.show = !this.show;
+      }
+    });
+  </script>
+</dom-module>
