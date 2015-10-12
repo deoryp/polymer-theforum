@@ -1,22 +1,22 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-thread">
-  <template>
-    <style include="theforum-theme"></style>
-    <style>
+  <style include="theforum-theme"></style>
+  <style>
+  
+    .replies {
+      border-width: 1px;
+      border-color: #eaeaea;
+      border-bottom-color: #eaeaea;
+      border-top-style: solid;
+      border-bottom-style: solid;
+      padding-top: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
     
-      .replies {
-        border-width: 1px;
-        border-color: #eaeaea;
-        border-bottom-color: #eaeaea;
-        border-top-style: solid;
-        border-bottom-style: solid;
-        padding-top: 10px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-      }
-      
-    </style>
+  </style>
+  <template>
     <paper-material animated elevation="{{elevation}}" class="thread" 
         on-mouseover='onHovered' 
         on-mouseout='onUnhovered'>

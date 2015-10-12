@@ -1,6 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-user">
+  <style>
+    img.user {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+  </style>
   <template>
     <iron-ajax
         auto
@@ -9,7 +16,7 @@
         on-response="handleMe"
         headers='{{headers()}}'
         debounce-duration="300"></iron-ajax>
-    
+    <img class="user" src="{{me.google.image.url}}" alt="{{me.google.displayName}}">
   </template>
   <script>
   
@@ -62,6 +69,10 @@
       _meChanged: function(newValue, oldValue) {
         this.initialized = true;
         this.authenticated = (typeof this.me !== 'undefined');
+        
+        console.log('new me:');
+        console.log(newValue);
+        
       },
       _googleChanged: function(google) {
         // yada
@@ -80,7 +91,7 @@
       handleMe: function(response) {
         var me = response.srcElement.lastResponse;
         var url = me.google.image.url;
-        me.google.image.url = url.substring(0, url.length - 5) + 'sz=24';
+        me.google.image.url = url.substring(0, url.length - 5) + 'sz=35';
         this.me = me;
       },
       login: function() {

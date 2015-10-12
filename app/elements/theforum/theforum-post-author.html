@@ -1,54 +1,53 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-post-author">
+  <style include="theforum-theme"></style>
+  <style>
+    img.author {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  
+    div.author {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+    }
+
+    div.author > span {
+      font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+      margin: 10px;
+      font-size: .8em;
+    }
+  
+    div.author > span.name {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+    }
+    
+    div.author > span.date {
+      font-size: .65em;
+    }
+  
+    div.author > span.fresh {
+      font-weight: bold;
+    }
+
+    div.author > iron-icon {
+      color: #9E9E9E;
+      --iron-icon-height: 16px;
+      --iron-icon-width: 16px;
+    }
+  </style>
   <template>
-    <style include="theforum-theme"></style>
-    <style>
-      img.author {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-      }
-    
-      div.author {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-            -ms-flex-align: center;
-                align-items: center;
-      }
-
-      div.author > span {
-        font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
-        margin: 10px;
-        font-size: .8em;
-      }
-    
-      div.author > span.name {
-        -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
-                flex-grow: 1;
-      }
-      
-      div.author > span.date {
-        font-size: .65em;
-      }
-    
-      div.author > span.fresh {
-        font-weight: bold;
-      }
-
-      div.author > iron-icon {
-        color: #9E9E9E;
-        --iron-icon-height: 16px;
-        --iron-icon-width: 16px;
-      }
-    </style>
-    
     <div class="author">
       <img class="author" src="{{photo}}" alt="{{name}}">
       <span id="author-name" class="name">{{name}}</span>

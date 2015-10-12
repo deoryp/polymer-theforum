@@ -1,24 +1,24 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-post">
+  <style>
+    paper-icon-button {
+      padding: 0px;
+      border-radius: 3px;
+      margin-left: 10px;
+    
+    }
+  
+    paper-icon-button::shadow #ripple {
+      color: blue;
+    }
+  
+    .with-badge > paper-badge {
+      --paper-badge-margin-left: 0px;
+      --paper-badge-margin-bottom: 0px;
+    }
+  </style>
   <template>
-    <style>
-      paper-icon-button {
-        padding: 0px;
-        border-radius: 3px;
-        margin-left: 10px;
-      
-      }
-    
-      paper-icon-button::shadow #ripple {
-        color: blue;
-      }
-    
-      .with-badge > paper-badge {
-        --paper-badge-margin-left: 0px;
-        --paper-badge-margin-bottom: 0px;
-      }
-    </style>
     <theforum-post-author
       photo="{{post.author.photo}}"
       name="{{post.author.name}}"

@@ -1,31 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="theforum-user">
+<dom-module id="theforum-api">
   <template>
-    <style include="theforum-theme"></style>
-    
-    <template is="dom-if" if="{{!initialized}}">
-      <iron-icon icon="account-circle"></iron-icon>
-    </template>
-    
-    <template is="dom-if" if="{{!authenticated}}">
-      <button on-click="login">Login to Google</button></p>
-    </template>
-    
-    <template is="dom-if" if="{{authenticated}}">
-      <img  
-        class="circle" 
-        src="{{me.google.image.url}}" 
-        alt="{{user.name}}">
-    </template>
-
-    <iron-ajax
-        auto
-        url="/api/users/me"
-        handle-as="json"
-        on-response="handleMe"
-        headers='{{headers()}}'
-        debounce-duration="300"></iron-ajax>
     
   </template>
   <script>
@@ -42,22 +18,8 @@
   }
   
   Polymer({
-      is: 'theforum-user',
+      is: 'theforum-api',
       properties: {
-        me: {
-          type: Object,
-          notify: true,
-          observer: '_meChanged'
-        },
-        authenticated: {
-          type: Boolean,
-          notify: true
-        },
-        initialized: {
-          type: Boolean,
-          value: false,
-          notify: true
-        },
       },
       headers: function() {
         var token = readCookie('token');

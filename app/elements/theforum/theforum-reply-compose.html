@@ -1,19 +1,19 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-reply-compose">
+  <style>
+    img.author {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border-radius: 50%;
+      border: dashed;
+      border-width: 1px;
+      margin-right: 10px;
+      opacity: .75;
+    }
+  </style>
   <template>
-    <style>
-      img.author {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border-radius: 50%;
-        border: dashed;
-        border-width: 1px;
-        margin-right: 10px;
-        opacity: .75;
-      }
-    </style>
     <div class="horizontal layout center">
       <img class="author" src="{{user.photo}}" alt="{{user.name}}">
       <paper-textarea label="Reply..." class="flex center"></paper-textarea>

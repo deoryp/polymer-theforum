@@ -1,61 +1,59 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="theforum-reply">
+  <style include="theforum-theme"></style>
+  <style>
+    img.author {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  
+    div.author {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: top;
+      -webkit-align-items: top;
+          -ms-flex-align: top;
+              align-items: top;
+    }
+
+    div.author > span {
+      font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+      margin: 0px 10px 0px 10px;
+      font-size: .8em;
+    }
+  
+    div.author > span.name {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+    }
+    
+    div.author > span.date {
+      font-size: .65em;
+    }
+  
+    div.author > span.fresh {
+      font-weight: bold;
+    }
+
+    div.author > iron-icon {
+      color: #9E9E9E;
+      --iron-icon-height: 16px;
+      --iron-icon-width: 16px;
+    }
+    
+    .markdown-html p {
+      margin-left: 10px;
+      margin-top: 2px;
+    }
+    
+  </style>
   <template>
-
-    <style include="theforum-theme"></style>
-    <style>
-      img.author {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-      }
-    
-      div.author {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: top;
-        -webkit-align-items: top;
-            -ms-flex-align: top;
-                align-items: top;
-      }
-
-      div.author > span {
-        font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
-        margin: 0px 10px 0px 10px;
-        font-size: .8em;
-      }
-    
-      div.author > span.name {
-        -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
-                flex-grow: 1;
-      }
-      
-      div.author > span.date {
-        font-size: .65em;
-      }
-    
-      div.author > span.fresh {
-        font-weight: bold;
-      }
-
-      div.author > iron-icon {
-        color: #9E9E9E;
-        --iron-icon-height: 16px;
-        --iron-icon-width: 16px;
-      }
-      
-      .markdown-html p {
-        margin-left: 10px;
-        margin-top: 2px;
-      }
-      
-    </style>
-    
     <div class="horizontal layout">
       <div>
         <img class="author" src="{{reply.author.photo}}" alt="{{reply.author.name}}">
