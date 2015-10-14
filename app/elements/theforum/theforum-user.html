@@ -9,6 +9,7 @@
     }
   </style>
   <template>
+    <theforum-cookie id="cookie"></theforum-cookie>
     <iron-ajax
         auto
         url="/api/users/me"
@@ -19,17 +20,6 @@
     <img class="user" src="{{me.google.image.url}}" alt="{{me.google.displayName}}">
   </template>
   <script>
-  
-  function readCookie(name) {
-  	var nameEQ = name + "=";
-  	var ca = document.cookie.split(';');
-  	for(var i=0;i < ca.length;i++) {
-  		var c = ca[i];
-  		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-  		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  	}
-  	return null;
-  }
   
   Polymer({
       is: 'theforum-user',
@@ -50,29 +40,16 @@
         },
       },
       
-      observers: [
-        '_googleChanged(me.google)',
-        '_userChanged(me.*)'
-      ],
-        
       headers: function() {
-        var token = readCookie('token');
-        token = decodeURIComponent(token);
-        token = token.substring(1, token.length - 1);
+        var token = this.$.cookie.token;
         return {
           'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json'
         }
       },
-//      authenticated: false,
-//      unauthenticated: true,
       _meChanged: function(newValue, oldValue) {
         this.initialized = true;
         this.authenticated = (typeof this.me !== 'undefined');
-        
-        console.log('new me:');
-        console.log(newValue);
-        
       },
       _googleChanged: function(google) {
         // yada
@@ -92,7 +69,10 @@
         var me = response.srcElement.lastResponse;
         var url = me.google.image.url;
         me.google.image.url = url.substring(0, url.length - 5) + 'sz=35';
+        me.photo = me.google.image.url;
+        me.handle = me.google.handle;
         this.me = me;
+
       },
       login: function() {
         window.location  = '/auth/google';

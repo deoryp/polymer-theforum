@@ -3,33 +3,28 @@
 <dom-module id="theforum-thread">
   <style include="theforum-theme"></style>
   <style>
-  
     .replies {
       border-width: 1px;
       border-color: #eaeaea;
       border-bottom-color: #eaeaea;
-      border-top-style: solid;
       border-bottom-style: solid;
-      padding-top: 10px;
       margin-top: 5px;
       margin-bottom: 10px;
     }
-    
   </style>
   <template>
     <paper-material animated elevation="{{elevation}}" class="thread" 
         on-mouseover='onHovered' 
         on-mouseout='onUnhovered'>
       <h2>{{thread.title}}</h2>
-      <theforum-post post="{{thread}}" show="{{opened}}"></theforum-post>
-    
+      <theforum-post post="{{thread}}" class="post" show="{{opened}}"></theforum-post>
       <iron-collapse opened="{{opened}}">
         <div class="replies">
           <template is="dom-repeat" items="{{thread.reply}}">
             <theforum-reply reply="{{item}}"></theforum-reply>
           </template>
         </div>
-        <theforum-reply-compose to="{{post}}" user="{{user}}"></theforum-reply-compose>
+        <theforum-reply-compose thread="{{thread}}" user="{{user}}"></theforum-reply-compose>
       </iron-collapse>
     </paper-material>  
   </template>
@@ -53,7 +48,7 @@
     },
   
     created: function() {
-      console.log('Highlighting for ', this, 'enabled!');
+//      console.log('Highlighting for ', this, 'enabled!');
     },
 
     _toggleHighlight: function() {
@@ -78,13 +73,13 @@
       behaviors: [HighlightBehavior],
       properties: {
         user: {
-          type: Object
+          type: Object,
+          notify: true
         },
         thread: {
           type: Object,
           observer: '_threadChanged'
-        },
-        
+        }
       },
       elevation: 1,
       onHovered: function() {

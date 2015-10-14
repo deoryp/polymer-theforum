@@ -31,6 +31,8 @@
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1;
+      font-weight: bold;
+      font-size: .8em;
     }
     
     div.author > span.date {
@@ -61,7 +63,7 @@
       <div class="flex">
         <div class="vertical layout">
           <div class="author">
-            <span id="author-name" class="name">{{reply.author.name}}</span>
+            <span id="author-name" class="name">{{reply.author.handle}}</span>
             <span id="author-at" class="date">{{prettyDate(reply.created)}}</span> 
             <iron-icon icon="star" hidden$="{{!fresh}}"></iron-icon>
             <iron-icon icon="b" hidden$="{{fresh}}"></iron-icon>
@@ -72,6 +74,7 @@
             </marked-element>
           </div>
       </div>
+      
     </div>
     
   </template>
@@ -90,7 +93,6 @@
         }
       },
       _replyChanged: function(newValue, oldValue) {
-        console.log(newValue)
         // check it.
       },
       _freshChanged: function(newValue, oldValue) {
@@ -99,7 +101,7 @@
       },
       prettyDate: function(date) {
         date = new Date(date);
-        return date.toDateString(); // TODO make this mo better
+        return moment(date).fromNow();
       }
     });
   </script>

@@ -3,12 +3,51 @@
 <dom-module id="theforum-topic">
   <style include="theforum-theme"></style>
   <template>
-    
+    <theforum-cookie id="cookie"></theforum-cookie>
+    <iron-ajax
+        auto
+        url="{{_url(topic)}}"
+        handle-as="json"
+        on-response="handleTopic"
+        headers='{{_headers()}}'
+        debounce-duration="300"></iron-ajax>
+
+    <template is="dom-repeat" items="{{threads}}">
+      <theforum-thread thread="{{item}}" user="{{user}}"></theforum-thread>
+    </template>
+
   </template>
   <script>
   Polymer({
       is: 'theforum-topic',
       properties: {
+        topic: {
+          type: String
+        },
+        user: {
+          type: Object
+        },
+        threads: {
+          type: Array,
+          value: [],
+          notify: true
+        }
+      },
+      _headers: function() {
+        var token = this.$.cookie.token;
+        return {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      },
+      _url: function(topic) {
+        return '/api/thread/' + topic;
+      },
+      handleTopic: function(response) {
+//        debugger;
+        this.threads = response.srcElement.lastResponse;
+//        this.push('threads', response.srcElement.lastResponse);
+        console.log(this.threads);
       }
     });
   </script>

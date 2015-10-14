@@ -15,7 +15,7 @@
   </style>
   <template>
     <div class="horizontal layout center">
-      <img class="author" src="{{user.photo}}" alt="{{user.name}}">
+      <img class="author" src="{{user.photo}}" alt="{{user.handle}}">
       <paper-textarea label="Reply..." class="flex center"></paper-textarea>
       <paper-icon-button icon="reply-all" on-click="reply"></paper-icon-button>
     </div>
@@ -28,10 +28,12 @@
           type: Object
         },
         user: {
-          type: Object
+          type: Object,
+          notify: true
         }
       },
       reply: function() {
+        debugger;
         console.log('yar');
       }
     });

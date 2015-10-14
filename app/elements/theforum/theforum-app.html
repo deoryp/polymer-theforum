@@ -57,7 +57,7 @@
           <!-- Toolbar icons -->
           <paper-icon-button icon="refresh"></paper-icon-button>
           
-          <theforum-user me="{{me}}"></theforum-user>
+          <theforum-user me="{{user}}"></theforum-user>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -80,7 +80,7 @@
                 <h2 class="page-title">This will be the fresh area</h2>
                 
                 
-                <p>{{me}}</p>
+                <p>{{user}}</p>
                 
               </paper-material>
             </section>
@@ -93,10 +93,13 @@
             </section>
 
             <section data-route="media">
+              <theforum-topic topic="general" user="{{user}}"></theforum-general>
+<!--
               <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
               <template is="dom-repeat" items="{{mediaThreads}}">
                 <theforum-thread thread="{{item}}"></theforum-thread>
               </template>
+-->
             </section>
 
             <section data-route="events">
@@ -114,17 +117,17 @@
   <script>
     Polymer({
       is: 'theforum-app',
+      properties: {
+        user: {
+          type: Object,
+          notify: true
+        }
+      },
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
         var bAt = new Date(b.updated || b.modifed || b.created).getTime();
         if (aAt === bAt) return 0;
         return aAt < bAt ? -1 : 1;
-      },
-      ready: function () {
-        this.user = {
-          photo: 'http://lh3.googleusercontent.com/-_YyQXXslczM/AAAAAAAAAAI/AAAAAAAAAAA/JQ35mBxKEpo/s96-c-mo/photo.jpg?sz=24',
-          name: 'Scott Nichols'
-        };
       }
     });
     
