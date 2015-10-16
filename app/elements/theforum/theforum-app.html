@@ -5,45 +5,68 @@
     <style include="shared-styles"></style>
     <style include="theforum-theme"></style>
     
+    
+    <style is="custom-style">
+      .skinny {
+        max-width: 300px;
+      }
+    
+      paper-button {
+        display: block;
+        margin-bottom: 24px;
+      }
+      paper-button.blue {
+        color: #fff;
+        background: var(--paper-blue-500);
+        --paper-button-flat-focus-color: var(--paper-blue-400);
+      }
+      paper-button.blue:hover {
+        background: var(--paper-blue-400);
+      }
+      paper-button.ripple {
+        --paper-button-ink-color: var(--paper-pink-a200);
+      }
+    </style>
+    
+    
     <paper-drawer-panel id="paperDrawerPanel">
+  
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
-
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
           <span class="paper-font-title">Menu</span>
         </paper-toolbar>
-
         <!-- Drawer Content -->
-        <paper-menu attr-for-selected="data-route" selected="[[route]]">
-
-          <a data-route="fresh" href="/" on-click="onDataRouteClick">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
+        <paper-menu
+            attr-for-selected="data-route"
+            selected="[[route]]">
+          <template is="dom-repeat" items="{{unauthenticatedTopics()}}">
+            <a data-route$="{{item.route}}" 
+                href="{{item.href}}" 
+                on-click="onDataRouteClick" 
+                disabled$="{{item.disabled}}"
+                hidden$="{{authenticated}}">
+              <iron-icon icon="{{item.icon}}"></iron-icon>
+              <span>{{item.title}}</span>
+            </a>
+          </template>
+          <template is="dom-repeat" items="{{authenticatedTopics()}}">
+            <a data-route$="{{item.route}}" 
+                href="{{item.href}}" 
+                on-click="onDataRouteClick" 
+                disabled$="{{item.disabled}}"
+                hidden$="{{!authenticated}}">
+              <iron-icon icon="{{item.icon}}"></iron-icon>
+              <span>{{item.title}}</span>
+            </a>
+          </template>
+          <a on-click="logout" 
+              hidden$="{{!authenticated}}">
+            <iron-icon icon="account-circle"></iron-icon>
+            <span>Logout</span>
           </a>
-          
-          <a data-route="general" href="/general" on-click="onDataRouteClick">
-            <iron-icon icon="question-answer"></iron-icon>
-            <span>General</span>
-          </a>
-
-          <a data-route="media" href="/media" on-click="onDataRouteClick">
-            <iron-icon icon="theaters"></iron-icon>
-            <span>Media</span>
-          </a>
-
-          <a disabled data-route="events" href="/events" on-click="onDataRouteClick">
-            <iron-icon icon="event"></iron-icon>
-            <span>Events</span>
-          </a>
-
-          <a disabled data-route="contacts" href="/events" on-click="onDataRouteClick">
-            <iron-icon icon="communication:contacts"></iron-icon>
-            <span>Rolodex</span>
-          </a>
-          
         </paper-menu>
-
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
@@ -55,9 +78,7 @@
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="refresh"></paper-icon-button>
-          
-          <theforum-user me="{{user}}"></theforum-user>
+          <theforum-user id="user" user="{{user}}" authenticated="{{authenticated}}"></theforum-user>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -74,17 +95,31 @@
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
+            
+            <section data-route="login">
+              <paper-material class="skinny" animated elevation="1">
+                <h3>Please login.</h3>
+                <p>You will be directed to a Google sign in prompt, then redirected back here.</p>
+                <paper-button class="blue" raised on-click="login">
+                  <iron-icon icon="input"></iron-icon> Sign in
+                </paper-button>
+              </paper-material>
+            </section>
 
             <section data-route="fresh">
               <paper-material animated elevation="1">
                 <h2 class="page-title">This will be the fresh area</h2>
-                
-                
-                <p>{{user}}</p>
-                
+              
+                <template is="dom-if" if="{{authenticated}}">
+                  <p>yes</p>
+                </template>
+                <template is="dom-if" if="{{!authenticated}}">
+                  <p>no</p>
+                </template>
+              
               </paper-material>
             </section>
-            
+          
             <section data-route="general">
               <theforum-model forum="general" threads="{{generalThreads}}"></theforum-model>
               <template is="dom-repeat" items="{{generalThreads}}" sort="sortThread">
@@ -93,6 +128,9 @@
             </section>
 
             <section data-route="media">
+            
+              <paper-fab icon="arrow-forward" title="arrow-forward"></paper-fab>
+            
               <theforum-topic topic="general" user="{{user}}"></theforum-general>
 <!--
               <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
@@ -110,18 +148,43 @@
 
           </iron-pages>
         </div>
-        
+      
       </paper-scroll-header-panel>
-    </paper-drawer-panel>    
+    </paper-drawer-panel>
   </template>
   <script>
     Polymer({
       is: 'theforum-app',
       properties: {
-        user: {
-          type: Object,
-          notify: true
+      },
+      isAuthenticated: function(user) {
+        if (user && user.isAuthenticated) {
+          return user.isAuthenticated();
         }
+        return false;
+      },
+      authenticatedTopics: function() {
+        var topics = [];
+        topics.push({route: 'fresh', href:'/', icon:'home', title:'Home'});
+        topics.push({route: 'general', href:'/general', icon:'question-answer', title:'General'});
+        topics.push({route: 'media', href:'/media', icon:'theaters', title:'Media'});
+        topics.push({route: 'events', href:'/events', icon:'event', title:'Events', disabled:true});
+        topics.push({route: 'contacts', href:'/contacts', icon:'communication:contacts',
+            title:'Rolodex', disabled:true});
+        return topics;
+      },
+      unauthenticatedTopics: function() {
+        var topics = [];
+        topics.push({route: 'login', href:'/login', icon:'account-circle', title:'Login'});
+        return topics;
+      },
+      login: function() {
+        window.location  = '/auth/google';
+      },
+      logout: function() {
+        var cookie = document.querySelector('theforum-cookie');
+        cookie.removeToken();
+        window.location  = '/';
       },
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();

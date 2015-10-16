@@ -24,11 +24,23 @@
           type: String,
           value: function() {
             var ct = readCookie('token');
-            ct = decodeURIComponent(ct);
-            ct = ct.substring(1, ct.length - 1);
-            return ct;
+            if (ct !== null) {
+              ct = decodeURIComponent(ct);
+              ct = ct.substring(1, ct.length - 1);
+              return ct;
+            }
+            return null;
           }
         }
+      },
+      hasToken: function() {
+        if (this.token) {
+          return true;
+        }
+        return false;
+      },
+      removeToken: function() {
+        document.cookie = "token=";
       }
     });
   </script>

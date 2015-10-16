@@ -14,30 +14,36 @@
         auto
         url="/api/users/me"
         handle-as="json"
-        on-response="handleMe"
+        on-response="handleUser"
         headers='{{headers()}}'
         debounce-duration="300"></iron-ajax>
-    <img class="user" src="{{me.google.image.url}}" alt="{{me.google.displayName}}">
+    <img class="user" src="{{user.photo}}" alt="{{user.handle}}" hidden$="{{!authenticated}}">
+    <iron-icon icon="face" hidden$="{{authenticated}}"></iron-icon>
   </template>
   <script>
   
   Polymer({
       is: 'theforum-user',
       properties: {
-        me: {
+        user: {
           type: Object,
           notify: true,
-          observer: '_meChanged'
+          observer: '_userChanged'
         },
         authenticated: {
           type: Boolean,
-          notify: true
+          notify: true,
+          value: false,
+          observer: '_authenticatedChanged'
         },
         initialized: {
           type: Boolean,
           value: false,
           notify: true
         },
+      },
+      isAuthenticated: function() {
+        return this.authenticated;
       },
       
       headers: function() {
@@ -47,32 +53,22 @@
           'Content-Type': 'application/json'
         }
       },
-      _meChanged: function(newValue, oldValue) {
+      _userChanged: function(newValue, oldValue) {
         this.initialized = true;
-        this.authenticated = (typeof this.me !== 'undefined');
+        this.set('authenticated', (typeof this.user !== 'undefined'));
+        this.authenticated = (typeof this.user !== 'undefined');
       },
-      _googleChanged: function(google) {
-        // yada
+      _authenticatedChanged: function(newValue, oldValue) {
+        console.log('Auth: ' + newValue);
       },
-      _userChanged: function(changeRecord) {
-        /*
-          changeRecord. has:
-          path. Path to the property that changed.
-          value. New value of the path that changed.
-          base. The object matching the non-wildcard portion of the path.
-        */
-        // also look at https://www.polymer-project.org/1.0/docs/devguide/properties.html#array-observation for array.
-        
-        
-      },
-      handleMe: function(response) {
-        var me = response.srcElement.lastResponse;
-        var url = me.google.image.url;
-        me.google.image.url = url.substring(0, url.length - 5) + 'sz=35';
-        me.photo = me.google.image.url;
-        me.handle = me.google.handle;
-        this.me = me;
-
+      handleUser: function(response) {
+        var user = response.srcElement.lastResponse;
+        var url = user.google.image.url;
+        user.google.image.url = url.substring(0, url.length - 5) + 'sz=35';
+        user.photo = user.google.image.url;
+        user.handle = user.google.handle;
+        this.user = user;
+        //this.set('user', user);
       },
       login: function() {
         window.location  = '/auth/google';
