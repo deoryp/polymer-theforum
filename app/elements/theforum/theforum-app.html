@@ -23,9 +23,6 @@
       paper-button.blue:hover {
         background: var(--paper-blue-400);
       }
-      paper-button.ripple {
-        --paper-button-ink-color: var(--paper-pink-a200);
-      }
     </style>
     
     
@@ -108,41 +105,27 @@
 
             <section data-route="fresh">
               <paper-material animated elevation="1">
-                <h2 class="page-title">This will be the fresh area</h2>
-              
-                <template is="dom-if" if="{{authenticated}}">
-                  <p>yes</p>
-                </template>
-                <template is="dom-if" if="{{!authenticated}}">
-                  <p>no</p>
-                </template>
-              
+                <h2 class="page-title">This will be the FRESH area.</h2>
               </paper-material>
             </section>
-          
+
             <section data-route="general">
-              <theforum-model forum="general" threads="{{generalThreads}}"></theforum-model>
-              <template is="dom-repeat" items="{{generalThreads}}" sort="sortThread">
-                <theforum-thread user="{{user}}" thread="{{item}}"></theforum-thread>
-              </template>
+                <theforum-topic topic="general" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="media">
-            
-              <paper-fab icon="arrow-forward" title="arrow-forward"></paper-fab>
-            
-              <theforum-topic topic="general" user="{{user}}"></theforum-general>
-<!--
-              <theforum-model forum="media" threads="{{mediaThreads}}"></theforum-model>
-              <template is="dom-repeat" items="{{mediaThreads}}">
-                <theforum-thread thread="{{item}}"></theforum-thread>
-              </template>
--->
+              <theforum-topic topic="media" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="events">
               <paper-material elevation="1">
-                <h2 class="page-title">EVENTS!!</h2>
+                <h2 class="page-title">This will be the EVENTS area.</h2>
+              </paper-material>
+            </section>
+
+            <section data-route="contacts">
+              <paper-material elevation="1">
+                <h2 class="page-title">This will be the CONTACTS area.</h2>
               </paper-material>
             </section>
 

@@ -24,7 +24,10 @@
             <theforum-reply reply="{{item}}"></theforum-reply>
           </template>
         </div>
-        <theforum-reply-compose thread="{{thread}}" user="{{user}}"></theforum-reply-compose>
+        <theforum-reply-compose
+            topic="{{thread.topic}}"
+            thread="{{thread._id}}"
+            user="{{user}}"></theforum-reply-compose>
       </iron-collapse>
     </paper-material>  
   </template>

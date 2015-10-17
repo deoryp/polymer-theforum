@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-post-compose">
+  <style>
+    img.author {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border-radius: 50%;
+      border: dashed;
+      border-width: 1px;
+      margin-right: 10px;
+      opacity: .75;
+    }
+    paper-input.title {
+      margin-right: 40px;
+    }
+    
+  </style>
+  <template>
+    <paper-input class="title" label="Say What?!"></paper-input>
+    <div class="horizontal layout center">
+      <img class="author" src="{{user.photo}}" alt="{{user.handle}}">
+      <paper-textarea label="omg..." class="flex center"></paper-textarea>
+      <paper-icon-button icon="create" on-click="post"></paper-icon-button>
+    </div>
+  </template>
+  <script>
+  Polymer({
+      is: 'theforum-post-compose',
+      properties: {
+        topic: String,
+        user: {
+          type: Object,
+          notify: true
+        }
+      },
+      post: function() {
+        debugger;
+        console.log('yar');
+      }
+    });
+  </script>
+</dom-module>

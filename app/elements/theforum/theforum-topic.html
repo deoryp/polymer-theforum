@@ -12,6 +12,13 @@
         headers='{{_headers()}}'
         debounce-duration="300"></iron-ajax>
 
+    <paper-material animated 
+        elevation="{{elevation}}"
+        on-mouseover="onHovered"
+        on-mouseout="onUnhovered">
+      <theforum-post-compose topic="[[topic]]" user="[[user]]"></theforum-post-compose>
+    </paper-material>
+
     <template is="dom-repeat" items="{{threads}}">
       <theforum-thread thread="{{item}}" user="{{user}}"></theforum-thread>
     </template>
@@ -48,7 +55,13 @@
         this.threads = response.srcElement.lastResponse;
 //        this.push('threads', response.srcElement.lastResponse);
         console.log(this.threads);
-      }
+      },
+      onHovered: function() {
+        this.elevation = 3;
+      },
+      onUnhovered: function() {
+        this.elevation = 1;
+      },
     });
   </script>
 </dom-module>

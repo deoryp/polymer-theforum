@@ -15,7 +15,7 @@
         url="/api/users/me"
         handle-as="json"
         on-response="handleUser"
-        headers='{{headers()}}'
+        headers='{{_headers()}}'
         debounce-duration="300"></iron-ajax>
     <img class="user" src="{{user.photo}}" alt="{{user.handle}}" hidden$="{{!authenticated}}">
     <iron-icon icon="face" hidden$="{{authenticated}}"></iron-icon>
@@ -46,7 +46,7 @@
         return this.authenticated;
       },
       
-      headers: function() {
+      _headers: function() {
         var token = this.$.cookie.token;
         return {
           'Authorization': 'Bearer ' + token,
