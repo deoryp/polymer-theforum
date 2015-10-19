@@ -55,6 +55,7 @@
     
   </template>
   <script>
+  /* globals moment */
   Polymer({
       is: 'theforum-post-author',
       properties: {
@@ -67,7 +68,7 @@
         name: String,
         at: Date
       },
-      _freshChanged: function(newValue, oldValue) {
+      _freshChanged: function(newValue) {
         this.toggleClass('fresh', newValue, this.$['author-name']);
         this.toggleClass('fresh', newValue, this.$['author-at']);
       },

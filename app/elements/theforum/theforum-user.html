@@ -45,20 +45,19 @@
       isAuthenticated: function() {
         return this.authenticated;
       },
-      
       _headers: function() {
         var token = this.$.cookie.token;
         return {
           'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json'
-        }
+        };
       },
-      _userChanged: function(newValue, oldValue) {
+      _userChanged: function() {
         this.initialized = true;
         this.set('authenticated', (typeof this.user !== 'undefined'));
         this.authenticated = (typeof this.user !== 'undefined');
       },
-      _authenticatedChanged: function(newValue, oldValue) {
+      _authenticatedChanged: function(newValue) {
         console.log('Auth: ' + newValue);
       },
       handleUser: function(response) {
@@ -68,31 +67,9 @@
         user.photo = user.google.image.url;
         user.handle = user.google.handle;
         this.user = user;
-        //this.set('user', user);
       },
       login: function() {
         window.location  = '/auth/google';
-      },
-      handleSignIn: function(response) {
-        this.status = 'Signin granted';
-        console.log('[Aware] Signin Response', response);
-        this.userName = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
-      },
-      handleOffline: function(response) {
-        this.offlineCode = response.detail.code;
-      },
-      handleSignOut: function(response) {
-        this.status = 'Signed out';
-        console.log('[Aware] Signout Response', response);
-        this.userName = 'N/A';
-      },
-      disconnect: function() {
-        var b = document.querySelector('google-signin');
-        var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
-        if (currentUser) {
-          currentUser.disconnect();
-        }
-        gapi.auth2.getAuthInstance().signOut();
       }
     });
   </script>

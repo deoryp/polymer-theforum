@@ -6,6 +6,7 @@
     <theforum-cookie id="cookie"></theforum-cookie>
     <iron-ajax
         auto
+        id="ajax"
         url="{{_url(topic)}}"
         handle-as="json"
         on-response="handleTopic"
@@ -16,11 +17,17 @@
         elevation="{{elevation}}"
         on-mouseover="onHovered"
         on-mouseout="onUnhovered">
-      <theforum-post-compose topic="[[topic]]" user="[[user]]"></theforum-post-compose>
+      <theforum-post-compose 
+          topic="[[topic]]"
+          user="[[user]]"
+          on-posted="_userPosted"></theforum-post-compose>
     </paper-material>
 
     <template is="dom-repeat" items="{{threads}}">
-      <theforum-thread thread="{{item}}" user="{{user}}"></theforum-thread>
+      <theforum-thread
+          thread="{{item}}"
+          user="{{user}}"
+          on-replied="_userReplied"></theforum-thread>
     </template>
 
   </template>
@@ -45,16 +52,19 @@
         return {
           'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json'
-        }
+        };
       },
       _url: function(topic) {
         return '/api/thread/' + topic;
       },
+      _userPosted: function() {
+        this.$.ajax.generateRequest();
+      },
+      _userReplied: function() {
+        this.$.ajax.generateRequest();
+      },
       handleTopic: function(response) {
-//        debugger;
         this.threads = response.srcElement.lastResponse;
-//        this.push('threads', response.srcElement.lastResponse);
-        console.log(this.threads);
       },
       onHovered: function() {
         this.elevation = 3;

@@ -28,7 +28,7 @@
         on-response="_handleResponse"></iron-ajax>
     <div class="horizontal layout center">
       <img class="author" src="{{user.photo}}" alt="{{user.handle}}">
-      <paper-textarea id="textarea" label="omg..." class="flex center"></paper-textarea>
+      <paper-textarea id="bodyText" label="omg..." class="flex center"></paper-textarea>
       <paper-icon-button icon="reply-all" on-click="reply"></paper-icon-button>
     </div>
   </template>
@@ -51,16 +51,20 @@
         return {
           'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json'
-        }
+        };
       },
       _handleResponse: function(e) {
         console.log('_handleResponse');
         console.log(e.detail.response);
+        
+        this.async(function() {
+          this.fire('replied', e.detail.response);
+        });
       },
       reply: function() {
         
         this.$.ajax.body = JSON.stringify({
-          markdown: this.$.textarea.value
+          markdown: this.$.bodyText.value
         });
         
         this.$.ajax.generateRequest();

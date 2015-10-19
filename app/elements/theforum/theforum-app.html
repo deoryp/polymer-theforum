@@ -172,7 +172,9 @@
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
         var bAt = new Date(b.updated || b.modifed || b.created).getTime();
-        if (aAt === bAt) return 0;
+        if (aAt === bAt) {
+          return 0;
+        }
         return aAt < bAt ? -1 : 1;
       }
     });

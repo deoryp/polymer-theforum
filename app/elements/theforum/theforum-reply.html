@@ -79,6 +79,7 @@
     
   </template>
   <script>
+  /* globals moment */
   Polymer({
       is: 'theforum-reply',
       properties: {
@@ -92,10 +93,10 @@
           observer: '_freshChanged'
         }
       },
-      _replyChanged: function(newValue, oldValue) {
+      _replyChanged: function() {
         // check it.
       },
-      _freshChanged: function(newValue, oldValue) {
+      _freshChanged: function(newValue) {
         this.toggleClass('fresh', newValue, this.$['author-name']);
         this.toggleClass('fresh', newValue, this.$['author-at']);
       },

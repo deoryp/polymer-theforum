@@ -35,7 +35,7 @@
   
   // neat.
   
-  HighlightBehavior = {
+  var HighlightBehavior = {
 
     properties: {
       isHighlighted: {
@@ -58,11 +58,6 @@
       this.isHighlighted = !this.isHighlighted;
     },
   
-    _highlightChanged_simple: function(value) {
-      this.toggleClass('highlighted', value);
-      
-    },
-    
     _highlightChanged: function() {
       this.classList.add('highlight');
       this.async(function() {
@@ -91,7 +86,7 @@
       onUnhovered: function() {
         this.elevation = 1;
       },
-      _threadChanged: function(newValue, oldValue) {
+      _threadChanged: function() {
         // check it.
       }
     });
