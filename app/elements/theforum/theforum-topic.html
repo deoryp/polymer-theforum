@@ -12,17 +12,7 @@
         on-response="handleTopic"
         headers='{{_headers()}}'
         debounce-duration="300"></iron-ajax>
-
-    <paper-material animated 
-        elevation="{{elevation}}"
-        on-mouseover="onHovered"
-        on-mouseout="onUnhovered">
-      <theforum-post-compose 
-          topic="[[topic]]"
-          user="[[user]]"
-          on-posted="_userPosted"></theforum-post-compose>
-    </paper-material>
-
+        
     <template is="dom-repeat" items="{{threads}}">
       <theforum-thread
           thread="{{item}}"

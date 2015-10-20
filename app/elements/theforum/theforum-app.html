@@ -10,7 +10,21 @@
       .skinny {
         max-width: 300px;
       }
+      .wide {
+        right: 0;
+        left: 0;
+      }
+      .tight {
+        margin: 0px;
+      }
     
+      paper-fab {
+        position: absolute;
+        bottom: 18px;
+        right: 18px;
+        z-index: 100;
+      }
+      
       paper-button {
         display: block;
         margin-bottom: 24px;
@@ -25,8 +39,37 @@
       }
     </style>
     
+    <paper-fab 
+        id="compose"
+        on-click="_composePost" 
+        icon="add"
+        hidden$="{{!_showComposePost(authenticated, route, composable)}}"></paper-fab>
     
-    <paper-drawer-panel id="paperDrawerPanel">
+    <paper-dialog
+        id="composePostDialog"
+        class="wide"
+        on-iron-overlay-opened="_composePostDialogOpened"
+        on-iron-overlay-closed="_composePostDialogClosed"
+        modal>
+    
+    <paper-material
+        class="tight"
+        animated 
+        elevation="3">
+      <theforum-post-compose2 
+          topic="[[route]]"
+          user="[[user]]"
+          on-posted="_userPosted"></theforum-post-compose2>
+    </paper-material>
+
+      </paper-dialog>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus>OK</paper-button>
+      </div>
+    </paper-dialog>
+    
+    <paper-drawer-panel drawer-width="175px" id="paperDrawerPanel">
   
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
@@ -65,7 +108,7 @@
           </a>
         </paper-menu>
       </paper-scroll-header-panel>
-
+      
       <!-- Main Area -->
       <paper-scroll-header-panel main condenses keep-condensed-header>
 
@@ -139,7 +182,41 @@
     Polymer({
       is: 'theforum-app',
       properties: {
+        composable: {
+          type: Boolean,
+          value: true
+        }
       },
+      _showComposePost: function (authenticated, route, composable) {
+        if (authenticated && composable) {
+          if (route === 'general') {
+            return true;
+          } else if (route === 'media') {
+            return true;
+          }
+        }
+        return false;
+      },
+      _composePost: function() {
+        console.log('here. ' + this.route);
+        
+        var dialog = document.getElementById('composePostDialog');
+        dialog.open();
+        
+        this.composable = false;
+      },
+
+      _composePostDialogOpened: function() {
+        console.log('opened.');
+      },
+
+      _composePostDialogClosed: function(e) {
+        console.log('closed.');
+        console.log(e);
+        this.composable = true;
+      },
+
+
       isAuthenticated: function(user) {
         if (user && user.isAuthenticated) {
           return user.isAuthenticated();
