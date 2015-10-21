@@ -13,6 +13,7 @@
       .wide {
         right: 0;
         left: 0;
+        
       }
       .tight {
         margin: 0px;
@@ -51,22 +52,16 @@
         on-iron-overlay-opened="_composePostDialogOpened"
         on-iron-overlay-closed="_composePostDialogClosed"
         modal>
-    
-    <paper-material
-        class="tight"
-        animated 
-        elevation="3">
-      <theforum-post-compose2 
-          topic="[[route]]"
-          user="[[user]]"
-          on-posted="_userPosted"></theforum-post-compose2>
-    </paper-material>
-
-      </paper-dialog>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm autofocus>OK</paper-button>
-      </div>
+      <paper-material
+          class="tight"
+          animated 
+          elevation="3">
+        <theforum-post-compose2 
+            topic="[[route]]"
+            user="[[user]]"
+            on-posted="_userPostPosted"
+            on-canceled="_userPostCanceled"></theforum-post-compose2>
+      </paper-material>
     </paper-dialog>
     
     <paper-drawer-panel drawer-width="175px" id="paperDrawerPanel">
@@ -215,8 +210,16 @@
         console.log(e);
         this.composable = true;
       },
+      
+      _userPostCanceled: function() {
+        console.log('_userPostCanceled');
+        this.$.composePostDialog.close();
+      },
 
-
+      _userPosted: function() {
+        this.$.ajax.generateRequest();
+      },
+      
       isAuthenticated: function(user) {
         if (user && user.isAuthenticated) {
           return user.isAuthenticated();

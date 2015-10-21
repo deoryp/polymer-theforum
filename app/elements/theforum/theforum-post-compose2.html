@@ -22,6 +22,11 @@
         headers='{{_headers()}}'
         handle-as="json"
         on-response="_handleResponse"></iron-ajax>
+    <div class="horizontal end-justified layout">
+      <paper-icon-button
+          icon="close"
+          on-click="_cancel"></paper-icon-button>
+    </div>
     <paper-input
         id="titleText"
         class="title"
@@ -37,10 +42,10 @@
           on-input="_onInput"
           label="omg..."></paper-textarea>
     </div>
-    <div class="horizontal layout center">
-      <paper-icon-button
+    <div class="horizontal end-justified layout">
+      <paper-fab
           icon="create"
-          on-click="post"
+          on-click="_post"
           disabled$="{{!hasContent}}"
           hidden$="{{!_postable(isWorking, hadSuccess, hadError)}}"></paper-icon-button>
       <paper-spinner active hidden$="{{!isWorking}}"></paper-spinner>
@@ -127,7 +132,7 @@
         });
       },
       _onFocus: function() {
-        this.$.bodyText.rows = 2;
+//        this.$.bodyText.rows = 2;
       },
       _onInput: function() {
         if (this.$.titleText && this.$.bodyText &&
@@ -138,7 +143,7 @@
           );
         }
       },
-      post: function() {
+      _post: function() {
         this.hadSuccess = false;
         this.hadError = false;
         this.isWorking = true;
@@ -147,6 +152,12 @@
           markdown: this.$.bodyText.value
         });
         this.$.ajax.generateRequest();
+      },
+      _cancel: function() {
+        console.log('cancel post');
+        this.async(function() {
+          this.fire('canceled', {});
+        });
       }
     });
   </script>
