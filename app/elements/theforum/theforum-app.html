@@ -185,8 +185,6 @@
         window.location  = '/';
       },
       _userPostPosted: function(e) {
-        console.log("_userPostPosted app");
-        console.log(e);
         this.$['topic-' + e.detail.topic].refresh();
       },
       sortThread: function(a, b) {

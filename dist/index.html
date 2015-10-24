@@ -45,8 +45,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-
-
 <style>.paper-font-display4,.paper-font-display3,.paper-font-display2,.paper-font-display1,.paper-font-headline,.paper-font-title,.paper-font-subhead,.paper-font-body2,.paper-font-body1,.paper-font-caption,.paper-font-menu,.paper-font-button {font-family: 'Roboto', 'Noto', sans-serif;-webkit-font-smoothing: antialiased;/* OS X subpixel AA bleed bug */}.paper-font-code2,.paper-font-code1 {font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;-webkit-font-smoothing: antialiased;/* OS X subpixel AA bleed bug */}/* Opt for better kerning for headers & other short labels. */.paper-font-display4,.paper-font-display3,.paper-font-display2,.paper-font-display1,.paper-font-headline,.paper-font-title,.paper-font-subhead,.paper-font-menu,.paper-font-button {text-rendering: optimizeLegibility;}/*"Line wrapping only applies to Body, Subhead, Headline, and the smaller Displaystyles. All other styles should exist as single lines."*/.paper-font-display4,.paper-font-display3,.paper-font-title,.paper-font-caption,.paper-font-menu,.paper-font-button {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.paper-font-display4 {font-size: 112px;font-weight: 300;letter-spacing: -.044em;line-height: 120px;}.paper-font-display3 {font-size: 56px;font-weight: 400;letter-spacing: -.026em;line-height: 60px;}.paper-font-display2 {font-size: 45px;font-weight: 400;letter-spacing: -.018em;line-height: 48px;}.paper-font-display1 {font-size: 34px;font-weight: 400;letter-spacing: -.01em;line-height: 40px;}.paper-font-headline {font-size: 24px;font-weight: 400;letter-spacing: -.012em;line-height: 32px;}.paper-font-title {font-size: 20px;font-weight: 500;line-height: 28px;}.paper-font-subhead {font-size: 16px;font-weight: 400;line-height: 24px;}.paper-font-body2 {font-size: 14px;font-weight: 500;line-height: 24px;}.paper-font-body1 {font-size: 14px;font-weight: 400;line-height: 20px;}.paper-font-caption {font-size: 12px;font-weight: 400;letter-spacing: 0.011em;line-height: 20px;}.paper-font-menu {font-size: 13px;font-weight: 500;line-height: 24px;}.paper-font-button {font-size: 14px;font-weight: 500;letter-spacing: 0.018em;line-height: 24px;text-transform: uppercase;}.paper-font-code2 {font-size: 14px;font-weight: 700;line-height: 20px;}.paper-font-code1 {font-size: 14px;font-weight: 700;line-height: 20px;}</style>
 <style>.shadow-transition {transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);}.shadow-elevation-2dp {box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),0 1px 5px 0 rgba(0, 0, 0, 0.12),0 3px 1px -2px rgba(0, 0, 0, 0.2);}.shadow-elevation-3dp {box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),0 1px 8px 0 rgba(0, 0, 0, 0.12),0 3px 3px -2px rgba(0, 0, 0, 0.4);}.shadow-elevation-4dp {box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),0 1px 10px 0 rgba(0, 0, 0, 0.12),0 2px 4px -1px rgba(0, 0, 0, 0.4);}.shadow-elevation-6dp {box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),0 1px 18px 0 rgba(0, 0, 0, 0.12),0 3px 5px -1px rgba(0, 0, 0, 0.4);}.shadow-elevation-8dp {box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),0 3px 14px 2px rgba(0, 0, 0, 0.12),0 5px 5px -3px rgba(0, 0, 0, 0.4);}.shadow-elevation-16dp {box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),06px 30px 5px rgba(0, 0, 0, 0.12),08px 10px -5px rgba(0, 0, 0, 0.4);}</style>
 
@@ -593,6 +591,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-icon id="icon" src="[[src]]" icon="[[icon]]"></iron-icon>
   </template>
 </dom-module>
+<dom-module id="iron-overlay-backdrop" assetpath="bower_components/iron-overlay-behavior/">
+
+  <style>:host {position: fixed;top: 0;left: 0;width: 100vw;height: 100vh;background-color: var(--iron-overlay-backdrop-background-color, #000);opacity: 0;transition: opacity 0.2s;@apply(--iron-overlay-backdrop);}:host([opened]) {opacity: var(--iron-overlay-backdrop-opacity, 0.6);@apply(--iron-overlay-backdrop-opened);}</style>
+
+  <template>
+    <content></content>
+  </template>
+
+</dom-module>
+
+<dom-module id="paper-dialog" assetpath="bower_components/paper-dialog/">
+
+  <style>/*@licenseCopyright (c) 2015 The Polymer Project Authors. All rights reserved.This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txtThe complete set of authors may be found at http://polymer.github.io/AUTHORS.txtThe complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txtCode distributed by Google as part of the polymer project is alsosubject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt*/:host {display: block;margin: 24px 40px;-webkit-overflow-scrolling: touch;background: var(--paper-dialog-background-color, --primary-background-color);color: var(--paper-dialog-color, --primary-text-color);@apply(--paper-font-body1);@apply(--shadow-elevation-16dp);@apply(--paper-dialog);}:host > ::content > * {margin-top: 20px;padding: 0 24px;}:host > ::content > .no-padding {padding: 0;}:host > ::content > *:first-child {margin-top: 24px;}:host > ::content > *:last-child {margin-bottom: 24px;}:host > ::content h2 {position: relative;margin: 0;@apply(--paper-font-title);@apply(--paper-dialog-title);}:host > ::content .buttons {position: relative;padding: 8px 8px 8px 24px;margin: 0;color: var(--paper-dialog-button-color, --default-primary-color);@apply(--layout-horizontal);@apply(--layout-end-justified);}</style>
+
+  <template>
+    <content></content>
+  </template>
+
+</dom-module>
+
+<dom-module id="paper-dialog-scrollable" assetpath="bower_components/paper-dialog-scrollable/">
+
+  <style>:host {display: block;position: relative;}:host(.is-scrolled:not(:first-child))::before {content: '';position: absolute;top: 0;left: 0;right: 0;height: 1px;background: var(--divider-color);}:host(.can-scroll:not(.scrolled-to-bottom):not(:last-child))::after {content: '';position: absolute;bottom: 0;left: 0;right: 0;height: 1px;background: var(--divider-color);}.scrollable {padding: 0 24px;@apply(--layout-scroll);@apply(--paper-dialog-scrollable);}</style>
+
+  <template>
+    <div id="scrollable" class="scrollable">
+      <content></content>
+    </div>
+  </template>
+
+</dom-module>
+
 <dom-module id="paper-badge" assetpath="bower_components/paper-badge/">
   <template>
     <style>:host {display: block;position: absolute;outline: none;}#badge {@apply(--paper-font-common-base);font-weight: 600;font-size: 12px;border-radius: 50%;margin-left: var(--paper-badge-margin-left, 0px);margin-bottom: var(--paper-badge-margin-bottom, 0px);width: var(--paper-badge-width, 22px);height: var(--paper-badge-height, 22px);background-color: var(--paper-badge-background, --accent-color);opacity: var(--paper-badge-opacity, 1.0);color: var(--paper-badge-text-color, white);@apply(--layout);@apply(--layout-center-center);@apply(--paper-badge);}</style>
@@ -830,7 +860,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </dom-module>
 <dom-module id="theforum-theme" assetpath="elements/theforum/">
   <template>
-    <style>/*Polymer includes a shim for CSS Custom Properties that we can use for application theming.Below, you'll find the default palette for the Polymer Starter Kit layout. Feel free to playwith changing the colors used or generate your own palette of colours at MaterialPalette.com.See https://www.polymer-project.org/1.0/docs/devguide/styling.html#xscope-styling-detailsfor further information on custom CSS properties.*//* Application theme */:root {--dark-primary-color: #303F9F;--default-primary-color: #3F51B5;--light-primary-color: #C5CAE9;--text-primary-color: #ffffff; /*text/icons*/--accent-color: #FF4081;--primary-background-color: #c5cae9;--primary-text-color: #212121;--secondary-text-color: #727272;--disabled-text-color: #bdbdbd;--divider-color: #B6B6B6;/* Components *//* paper-drawer-panel */--drawer-menu-color: #ffffff;--drawer-border-color: 1px solid #ccc;--drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);/* paper-menu */--paper-menu-background-color: #fff;--menu-link-color: #111111;}/* General styles */#drawerToolbar {color: var(--secondary-text-color);background-color: var(--drawer-menu-color);border-bottom: var(--drawer-toolbar-border-color);}paper-scroll-header-panel {height: 100%;}paper-material {border-radius: 2px;height: 100%;padding: 16px 0 16px 0;width: calc(98.66% - 16px);margin: 16px auto;background: white;}paper-material.post {-webkit-animation: dropGift .3s;animation: dropGift .3s;}// http://rhumaric.com/2013/12/apparition-and-css-animations/@keyframes dropGift{0% {-webkit-transform: translateY(-200px);transform: translateY(-200px);}75% {-webkit-transform: translateY(5px);transform: translateY(5px);}}@-webkit-keyframes dropGift{0% {-webkit-transform: translateY(-200px);transform: translateY(-200px);}75% {-webkit-transform: translateY(5px);transform: translateY(5px);}}paper-menu iron-icon {margin-right: 33px;opacity: 0.54;}.paper-menu > .iron-selected {color: var(--default-primary-color);}paper-menu a {text-decoration: none;color: var(--menu-link-color);display: -ms-flexbox;display: -webkit-flex;display: flex;-ms-flex-direction: row;-webkit-flex-direction: row;flex-direction: row;-ms-flex-align: center;-webkit-align-items: center;align-items: center;font-family: 'Roboto', 'Noto', sans-serif;-webkit-font-smoothing: antialiased;text-rendering: optimizeLegibility;font-size: 14px;font-weight: 400;line-height: 24px;min-height: 48px;padding: 0 16px;}paper-toolbar.tall .app-name {font-size: 40px;font-weight: 300;/* Required for main area's paper-scroll-header-panel custom condensing transformation */-webkit-transform-origin: left center;transform-origin: left center;}#mainToolbar .middle-container{height: 100%;margin-left: 48px;}#mainToolbar:not(.tall) .middle {font-size: 18px;padding-bottom: 0;}#mainToolbar .bottom {margin-left: 48px;/* Required for main area's paper-scroll-header-panel custom condensing transformation */-webkit-transform-origin: left center;transform-origin: left center;}/* Height of the scroll area */.content {height: 900px;}img.circle {border-radius: 50%;}/* Breakpoints *//* Small */@media (max-width: 600px) {paper-material {--menu-container-display: none;width: calc(97.33% - 32px);padding-left: 16px;padding-right: 16px;}paper-toolbar.tall .app-name {font-size: 24px;font-weight: 400;}#drawer .paper-toolbar {margin-left: 16px;}#overlay {min-width: 360px;}.bg {background: white;}}/* Tablet+ */@media (min-width: 601px) {paper-material {width: calc(98% - 46px);margin-bottom: 32px;padding-left: 30px;padding-right: 30px;}#drawer.paper-drawer-panel > [drawer] {border-right: 1px solid rgba(0, 0, 0, 0.14);}iron-pages {padding: 22px 22px;}}/* Material Design Adaptive Breakpoints *//*Below you'll find CSS media queries based on the breakpoint guidancepublished by the Material Design team. You can choose to use, customiseor remove these breakpoints based on your needs.http://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints*//* mobile-small */@media all and (min-width: 0) and (max-width: 360px) and (orientation: portrait) { }/* mobile-large */@media all and (min-width: 361px) and (orientation: portrait) { }/* mobile-small-landscape */@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }/* mobile-large-landscape */@media all and (min-width: 481px) and (orientation: landscape) { }/* tablet-small-landscape */@media all and (min-width: 600px) and (max-width: 960px) and (orientation: landscape) { }/* tablet-large-landscape */@media all and (min-width: 961px) and (orientation: landscape) { }/* tablet-small */@media all and (min-width: 600px) and (orientation: portrait) { }/* tablet-large */@media all and (min-width: 601px) and (max-width: 840px) and (orientation : portrait) { }/* desktop-x-small-landscape */@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }/* desktop-x-small */@media all and (min-width: 0) and (max-width: 480px) and (max-aspect-ratio: 4/3) { }/* desktop-small-landscape */@media all and (min-width: 481px) and (max-width: 840px) and (orientation: landscape) { }/* desktop-small */@media all and (min-width: 481px) and (max-width: 840px) and (max-aspect-ratio: 4/3) { }/* desktop-medium-landscape */@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { }/* desktop-medium */@media all and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) { }/* desktop-large */@media all and (min-width: 1281px) and (max-width: 1600px) { }/* desktop-xlarge */@media all and (min-width: 1601px) and (max-width: 1920px) { }</style>
+    <style>/*Polymer includes a shim for CSS Custom Properties that we can use for application theming.Below, you'll find the default palette for the Polymer Starter Kit layout. Feel free to playwith changing the colors used or generate your own palette of colours at MaterialPalette.com.See https://www.polymer-project.org/1.0/docs/devguide/styling.html#xscope-styling-detailsfor further information on custom CSS properties.*//* Application theme */:root {--dark-primary-color: #303F9F;--default-primary-color: #3F51B5;--light-primary-color: #C5CAE9;--text-primary-color: #ffffff; /*text/icons*/--accent-color: #FF4081;--primary-background-color: #c5cae9;--primary-text-color: #212121;--secondary-text-color: #727272;--disabled-text-color: #bdbdbd;--divider-color: #B6B6B6;/* Components *//* paper-drawer-panel */--drawer-menu-color: #ffffff;--drawer-border-color: 1px solid #ccc;--drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);/* paper-menu */--paper-menu-background-color: #fff;--menu-link-color: #111111;}/* General styles */#drawerToolbar {color: var(--secondary-text-color);background-color: var(--drawer-menu-color);border-bottom: var(--drawer-toolbar-border-color);}paper-scroll-header-panel {height: 100%;}paper-material {border-radius: 2px;height: 100%;padding: 16px 0 16px 0;width: calc(98.66% - 16px);margin: 16px auto;background: white;}paper-dialog {border-radius: 2px;padding: 16px 0 16px 0;width: calc(98.66% - 16px);background: white;}paper-material.post {-webkit-animation: dropGift .3s;animation: dropGift .3s;}// http://rhumaric.com/2013/12/apparition-and-css-animations/@keyframes dropGift{0% {-webkit-transform: translateY(-200px);transform: translateY(-200px);}75% {-webkit-transform: translateY(5px);transform: translateY(5px);}}@-webkit-keyframes dropGift{0% {-webkit-transform: translateY(-200px);transform: translateY(-200px);}75% {-webkit-transform: translateY(5px);transform: translateY(5px);}}paper-menu iron-icon {margin-right: 33px;opacity: 0.54;}.paper-menu > .iron-selected {color: var(--default-primary-color);}paper-menu a {text-decoration: none;color: var(--menu-link-color);display: -ms-flexbox;display: -webkit-flex;display: flex;-ms-flex-direction: row;-webkit-flex-direction: row;flex-direction: row;-ms-flex-align: center;-webkit-align-items: center;align-items: center;font-family: 'Roboto', 'Noto', sans-serif;-webkit-font-smoothing: antialiased;text-rendering: optimizeLegibility;font-size: 14px;font-weight: 400;line-height: 24px;min-height: 48px;padding: 0 16px;}paper-toolbar.tall .app-name {font-size: 40px;font-weight: 300;/* Required for main area's paper-scroll-header-panel custom condensing transformation */-webkit-transform-origin: left center;transform-origin: left center;}#mainToolbar .middle-container{height: 100%;margin-left: 48px;}#mainToolbar:not(.tall) .middle {font-size: 18px;padding-bottom: 0;}#mainToolbar .bottom {margin-left: 48px;/* Required for main area's paper-scroll-header-panel custom condensing transformation */-webkit-transform-origin: left center;transform-origin: left center;}/* Height of the scroll area */.content {height: 900px;}img.circle {border-radius: 50%;}/* Breakpoints *//* Small */@media (max-width: 600px) {paper-material {--menu-container-display: none;width: calc(97.33% - 32px);padding-left: 16px;padding-right: 16px;}paper-dialog {width: calc(97.33% - 32px);padding-left: 16px;padding-right: 16px;}paper-toolbar.tall .app-name {font-size: 24px;font-weight: 400;}#drawer .paper-toolbar {margin-left: 16px;}#overlay {min-width: 360px;}.bg {background: white;}}/* Tablet+ */@media (min-width: 601px) {paper-material {width: calc(98% - 46px);margin-bottom: 32px;padding-left: 30px;padding-right: 30px;}paper-dialog {width: calc(98% - 46px);margin-bottom: 32px;padding-left: 30px;padding-right: 30px;}#drawer.paper-drawer-panel > [drawer] {border-right: 1px solid rgba(0, 0, 0, 0.14);}iron-pages {padding: 22px 22px;}}/* Material Design Adaptive Breakpoints *//*Below you'll find CSS media queries based on the breakpoint guidancepublished by the Material Design team. You can choose to use, customiseor remove these breakpoints based on your needs.http://www.google.com/design/spec/layout/adaptive-ui.html#adaptive-ui-breakpoints*//* mobile-small */@media all and (min-width: 0) and (max-width: 360px) and (orientation: portrait) { }/* mobile-large */@media all and (min-width: 361px) and (orientation: portrait) { }/* mobile-small-landscape */@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }/* mobile-large-landscape */@media all and (min-width: 481px) and (orientation: landscape) { }/* tablet-small-landscape */@media all and (min-width: 600px) and (max-width: 960px) and (orientation: landscape) { }/* tablet-large-landscape */@media all and (min-width: 961px) and (orientation: landscape) { }/* tablet-small */@media all and (min-width: 600px) and (orientation: portrait) { }/* tablet-large */@media all and (min-width: 601px) and (max-width: 840px) and (orientation : portrait) { }/* desktop-x-small-landscape */@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }/* desktop-x-small */@media all and (min-width: 0) and (max-width: 480px) and (max-aspect-ratio: 4/3) { }/* desktop-small-landscape */@media all and (min-width: 481px) and (max-width: 840px) and (orientation: landscape) { }/* desktop-small */@media all and (min-width: 481px) and (max-width: 840px) and (max-aspect-ratio: 4/3) { }/* desktop-medium-landscape */@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { }/* desktop-medium */@media all and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) { }/* desktop-large */@media all and (min-width: 1281px) and (max-width: 1600px) { }/* desktop-xlarge */@media all and (min-width: 1601px) and (max-width: 1920px) { }</style>
   </template>
 </dom-module>
 <dom-module id="theforum-app" assetpath="elements/theforum/">
@@ -839,10 +869,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="theforum-theme"></style>
     
     
-    <style is="custom-style">.skinny {max-width: 300px;}paper-button {display: block;margin-bottom: 24px;}paper-button.blue {color: #fff;background: var(--paper-blue-500);--paper-button-flat-focus-color: var(--paper-blue-400);}paper-button.blue:hover {background: var(--paper-blue-400);}</style>
+    <style is="custom-style">.skinny {max-width: 300px;}.tight {margin: 0px;}paper-button {display: block;margin-bottom: 24px;}paper-button.blue {color: #fff;background: var(--paper-blue-500);--paper-button-flat-focus-color: var(--paper-blue-400);}paper-button.blue:hover {background: var(--paper-blue-400);}</style>
     
+    <theforum-fad topic="[[route]]" authenticated$="[[authenticated]]" user="[[user]]" on-posted="_userPostPosted">
+    </theforum-fad>
     
-    <paper-drawer-panel id="paperDrawerPanel">
+    <paper-drawer-panel drawer-width="175px" id="paperDrawerPanel">
   
       
       <paper-scroll-header-panel drawer="" fixed="">
@@ -870,7 +902,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
         </paper-menu>
       </paper-scroll-header-panel>
-
+      
       
       <paper-scroll-header-panel main="" condenses="" keep-condensed-header="">
 
@@ -915,11 +947,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
 
             <section data-route="general">
-                <theforum-topic topic="general" user="{{user}}">
+                <theforum-topic id="topic-general" topic="general" user="{{user}}">
             </theforum-topic></section>
 
             <section data-route="media">
-              <theforum-topic topic="media" user="{{user}}">
+              <theforum-topic id="topic-media" topic="media" user="{{user}}">
             </theforum-topic></section>
 
             <section data-route="events">
@@ -957,11 +989,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <theforum-cookie id="cookie"></theforum-cookie>
     <iron-ajax auto="" id="ajax" url="{{_url(topic)}}" handle-as="json" on-response="handleTopic" headers="{{_headers()}}" debounce-duration="300"></iron-ajax>
-
-    <paper-material animated="" elevation="{{elevation}}" on-mouseover="onHovered" on-mouseout="onUnhovered">
-      <theforum-post-compose topic="[[topic]]" user="[[user]]" on-posted="_userPosted"></theforum-post-compose>
-    </paper-material>
-
+        
     <template is="dom-repeat" items="{{threads}}">
       <theforum-thread thread="{{item}}" user="{{user}}" on-replied="_userReplied"></theforum-thread>
     </template>
@@ -988,7 +1016,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-<dom-module id="theforum-post" assetpath="elements/theforum/">
+<dom-module id="theforum-fad" assetpath="elements/theforum/">
+  <style include="theforum-theme"></style>
+  <style>:host paper-fab {position: absolute;bottom: 10px;right: 10px;z-index: 100;}</style>
+  <template>
+    <paper-fab id="compose" on-click="_composePost" icon="add" hidden$="{{!_showComposePost(authenticated, topic, composable)}}"></paper-fab>
+        
+    <paper-dialog id="composePostDialog" on-iron-overlay-opened="_dialogOpened" on-iron-overlay-closed="_dialogClosed" modal="">
+        <theforum-post-compose topic="[[topic]]" user="[[user]]" on-posted="_userPostPosted" on-canceled="_userPostCanceled"></theforum-post-compose>
+    </paper-dialog>
+  </template>
+  </dom-module><dom-module id="theforum-post" assetpath="elements/theforum/">
   <style>paper-icon-button {padding: 0px;border-radius: 3px;margin-left: 10px;}paper-icon-button::shadow #ripple {color: blue;}.with-badge > paper-badge {--paper-badge-margin-left: 0px;--paper-badge-margin-bottom: 0px;}.breaker {border-width: 1px;border-bottom-color: #eaeaea;border-bottom-style: solid;margin-top: 5px;margin-bottom: 10px;}</style>
   <template>
     <theforum-post-author photo="{{post.author.photo}}" name="{{post.author.handle}}" at="{{post.created}}" fresh$="{{post.fresh}}">
@@ -1029,19 +1067,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
   </template>
   </dom-module><dom-module id="theforum-post-compose" assetpath="elements/theforum/">
-  <style>img.author {width: 32px;height: 32px;border-radius: 50%;border-radius: 50%;border: dashed;border-width: 1px;margin-right: 10px;opacity: .75;}paper-input.title {margin-right: 40px;}</style>
+  <style>img.author {width: 32px;height: 32px;border-radius: 50%;border-radius: 50%;border: dashed;border-width: 1px;margin-right: 10px;opacity: .75;}</style>
   <template>
     <theforum-cookie id="cookie"></theforum-cookie>
     <iron-ajax id="ajax" url="{{_createPostUrl(topic)}}" method="POST" headers="{{_headers()}}" handle-as="json" on-response="_handleResponse"></iron-ajax>
-    <paper-input id="titleText" class="title" on-input="_onInput" label="Say What?!"></paper-input>
-    <div class="horizontal layout center">
+    <div class="horizontal end-justified layout">
+      <paper-icon-button icon="close" on-click="_cancel"></paper-icon-button>
+    </div>
+    <paper-input id="titleText" class="title" on-input="_onInput" label="Title"></paper-input>
+    <div class="horizontal layout start">
       <img class="author" src="{{user.photo}}" alt="{{user.handle}}">
-      <paper-textarea id="bodyText" class="flex center" on-focus="_onFocus" on-input="_onInput" label="omg..."></paper-textarea>
-      <paper-icon-button icon="create" on-click="post" disabled$="{{!hasContent}}" hidden$="{{!_postable(isWorking, hadSuccess, hadError)}}"></paper-icon-button>
+      <paper-textarea id="bodyText" class="flex center" rows="8" max-rows="8" on-focus="_onFocus" on-input="_onInput" label="omg..."></paper-textarea>
+    </div>
+    <div class="horizontal end-justified layout">
+      <paper-fab icon="create" on-click="_post" disabled$="{{!hasContent}}" hidden$="{{!_postable(isWorking, hadSuccess, hadError)}}">
       <paper-spinner active="" hidden$="{{!isWorking}}"></paper-spinner>
       <iron-icon icon="done" hidden$="{{!hadSuccess}}"></iron-icon>
       <iron-icon icon="error" hidden$="{{!hadError}}"></iron-icon>
-    </div>
+    </paper-fab></div>
   </template>
   </dom-module><dom-module id="theforum-reply" assetpath="elements/theforum/">
   <style include="theforum-theme"></style>

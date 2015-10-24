@@ -10,6 +10,9 @@
       .skinny {
         max-width: 300px;
       }
+      .tight {
+        margin: 0px;
+      }
     
       paper-button {
         display: block;
@@ -25,8 +28,14 @@
       }
     </style>
     
+    <theforum-fad
+        topic="[[route]]"
+        authenticated$="[[authenticated]]"
+        user="[[user]]"
+        on-posted="_userPostPosted">
+    </theforum-fad>
     
-    <paper-drawer-panel id="paperDrawerPanel">
+    <paper-drawer-panel drawer-width="175px" id="paperDrawerPanel">
   
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
@@ -65,7 +74,7 @@
           </a>
         </paper-menu>
       </paper-scroll-header-panel>
-
+      
       <!-- Main Area -->
       <paper-scroll-header-panel main condenses keep-condensed-header>
 
@@ -110,11 +119,11 @@
             </section>
 
             <section data-route="general">
-                <theforum-topic topic="general" user="{{user}}"></theforum-general>
+                <theforum-topic id="topic-general" topic="general" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="media">
-              <theforum-topic topic="media" user="{{user}}"></theforum-general>
+              <theforum-topic id="topic-media" topic="media" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="events">
@@ -139,7 +148,13 @@
     Polymer({
       is: 'theforum-app',
       properties: {
+        
       },
+
+      _refreshTopic: function(e) {
+        console.log(e.topic);
+      },
+      
       isAuthenticated: function(user) {
         if (user && user.isAuthenticated) {
           return user.isAuthenticated();
@@ -168,6 +183,9 @@
         var cookie = document.querySelector('theforum-cookie');
         cookie.removeToken();
         window.location  = '/';
+      },
+      _userPostPosted: function(e) {
+        this.$['topic-' + e.detail.topic].refresh();
       },
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
