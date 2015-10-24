@@ -37,6 +37,9 @@
           notify: true
         }
       },
+      refresh: function() {
+        this.$.ajax.generateRequest();
+      },
       _headers: function() {
         var token = this.$.cookie.token;
         return {
@@ -48,7 +51,7 @@
         return '/api/thread/' + topic;
       },
       _userReplied: function() {
-        this.$.ajax.generateRequest();
+        this.refresh();
       },
       handleTopic: function(response) {
         this.threads = response.srcElement.lastResponse;

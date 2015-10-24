@@ -10,22 +10,10 @@
       .skinny {
         max-width: 300px;
       }
-      .wide {
-        right: 0;
-        left: 0;
-        
-      }
       .tight {
         margin: 0px;
       }
     
-      paper-fab {
-        position: absolute;
-        bottom: 18px;
-        right: 18px;
-        z-index: 100;
-      }
-      
       paper-button {
         display: block;
         margin-bottom: 24px;
@@ -40,29 +28,12 @@
       }
     </style>
     
-    <paper-fab 
-        id="compose"
-        on-click="_composePost" 
-        icon="add"
-        hidden$="{{!_showComposePost(authenticated, route, composable)}}"></paper-fab>
-    
-    <paper-dialog
-        id="composePostDialog"
-        class="wide"
-        on-iron-overlay-opened="_composePostDialogOpened"
-        on-iron-overlay-closed="_composePostDialogClosed"
-        modal>
-      <paper-material
-          class="tight"
-          animated 
-          elevation="3">
-        <theforum-post-compose2 
-            topic="[[route]]"
-            user="[[user]]"
-            on-posted="_userPostPosted"
-            on-canceled="_userPostCanceled"></theforum-post-compose2>
-      </paper-material>
-    </paper-dialog>
+    <theforum-fad
+        topic="[[route]]"
+        authenticated$="[[authenticated]]"
+        user="[[user]]"
+        on-posted="_userPostPosted">
+    </theforum-fad>
     
     <paper-drawer-panel drawer-width="175px" id="paperDrawerPanel">
   
@@ -148,11 +119,11 @@
             </section>
 
             <section data-route="general">
-                <theforum-topic topic="general" user="{{user}}"></theforum-general>
+                <theforum-topic id="topic-general" topic="general" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="media">
-              <theforum-topic topic="media" user="{{user}}"></theforum-general>
+              <theforum-topic id="topic-media" topic="media" user="{{user}}"></theforum-general>
             </section>
 
             <section data-route="events">
@@ -177,47 +148,11 @@
     Polymer({
       is: 'theforum-app',
       properties: {
-        composable: {
-          type: Boolean,
-          value: true
-        }
-      },
-      _showComposePost: function (authenticated, route, composable) {
-        if (authenticated && composable) {
-          if (route === 'general') {
-            return true;
-          } else if (route === 'media') {
-            return true;
-          }
-        }
-        return false;
-      },
-      _composePost: function() {
-        console.log('here. ' + this.route);
         
-        var dialog = document.getElementById('composePostDialog');
-        dialog.open();
-        
-        this.composable = false;
       },
 
-      _composePostDialogOpened: function() {
-        console.log('opened.');
-      },
-
-      _composePostDialogClosed: function(e) {
-        console.log('closed.');
-        console.log(e);
-        this.composable = true;
-      },
-      
-      _userPostCanceled: function() {
-        console.log('_userPostCanceled');
-        this.$.composePostDialog.close();
-      },
-
-      _userPosted: function() {
-        this.$.ajax.generateRequest();
+      _refreshTopic: function(e) {
+        console.log(e.topic);
       },
       
       isAuthenticated: function(user) {
@@ -248,6 +183,11 @@
         var cookie = document.querySelector('theforum-cookie');
         cookie.removeToken();
         window.location  = '/';
+      },
+      _userPostPosted: function(e) {
+        console.log("_userPostPosted app");
+        console.log(e);
+        this.$['topic-' + e.detail.topic].refresh();
       },
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
