@@ -5,10 +5,19 @@ TODO:: look at : http://jsfiddle.net/bistri/cyc62/
 https://github.com/webrtc/samples/tree/gh-pages/src/content/datachannel/basic
 
 [ ] create reply
-[ ] Create new post
+[x] Create new post
 [ ] mark seen
 [ ] fresh list
-
+[ ] paper-scroll-header-panel
+[ ] IronOverlayBehavior
+[ ] Iron-List - infinate scrolls..
+[ ] Service worker:
+       - https://github.com/jakearchibald/trained-to-thrill
+       - https://www.chromium.org/blink/serviceworker
+       - https://developers.google.com/web/updates/2015/03/push-notifications-on-the-open-web
+       - https://github.com/GoogleChrome/samples/tree/gh-pages/service-worker
+[ ] Google Cloud Docker example
+    - https://cloud.google.com/container-engine/docs/tutorials/hello-node?hl=en
 
 ## Polymer Starter Kit
 

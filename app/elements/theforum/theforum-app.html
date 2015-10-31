@@ -143,6 +143,9 @@
       
       </paper-scroll-header-panel>
     </paper-drawer-panel>
+    
+    <paper-toast id="toast1" text="This is a toast!"></paper-toast>
+     
   </template>
   <script>
     Polymer({
@@ -186,6 +189,9 @@
       },
       _userPostPosted: function(e) {
         this.$['topic-' + e.detail.topic].refresh();
+        var toast = document.querySelector('#toast1')
+        toast.text = "Posted \"" + e.detail.title + "\" to \"" + e.detail.topic + "\".";
+        toast.show();
       },
       sortThread: function(a, b) {
         var aAt = new Date(a.updated || a.modifed || a.created).getTime();
