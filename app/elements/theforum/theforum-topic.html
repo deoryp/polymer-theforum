@@ -14,11 +14,6 @@
         debounce-duration="300"></iron-ajax>
         
     <template is="dom-repeat" items="{{threads}}">
-      <theforum-thread
-          thread="{{item}}"
-          user="{{user}}"
-          on-replied="_userReplied"></theforum-thread>
-          
       <theforum-thread2
           thread="{{item}}"
           user="{{user}}"

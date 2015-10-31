@@ -5,6 +5,7 @@
   <style>
     :host > paper-card {
       width: 100%;
+      margin-bottom: 20px;
     }
     .author > img, img.author {
       width: 32px;
@@ -84,6 +85,21 @@
     }
   </style>
   <template>
+    
+    <paper-dialog
+        id="composeReplyDialog"
+        on-iron-overlay-opened="_dialogOpened"
+        on-iron-overlay-closed="_dialogClosed"
+        modal>
+        <theforum-reply-compose
+            title="[[thread.title]]"
+            topic="[[thread.topic]]"
+            thread="[[thread._id]]"
+            user="[[user]]"
+            on-replied="_userReplyPosted"
+            on-canceled="_userReplyCanceled"></theforum-reply-compose>
+    </paper-dialog>
+    
     <paper-card animated
         heading="{{thread.title}}"
         elevation="{{elevation}}"
@@ -120,12 +136,13 @@
           <theforum-reply2 user="[[user]]" reply="[[item]]"></theforum-reply2>
         </template>
       </div>
-      <paper-item class="card-actions reply" on-click="reply">
+      <paper-item class="card-actions reply" on-click="_composeReply">
         <img class="author ghost" src="[[user.photo]]" alt="{{user.handle}}">
         <span class="ghost">Add a comment...</span>
       </paper-item>
   </template>
   <script>
+  /* globals moment */
   Polymer({
       is: 'theforum-thread2',
       properties: {
@@ -149,7 +166,7 @@
         // check it.
       },
       _hasOwnership: function(user, thread) {
-        if (this.user && this.thread) {
+        if (user && thread) {
           return (this.user._id === this.thread.author.id);
         }
         return false;
@@ -157,7 +174,22 @@
       prettyDate: function(date) {
         date = new Date(date);
         return moment(date).fromNow();
-      }
+      },
+      _composeReply: function() {
+        this.$.composeReplyDialog.open();
+      },
+      _dialogOpened: function() {
+        console.log('opened.');
+      },
+      _dialogClosed: function() {
+        console.log('closed.');
+      },
+      _userReplyPosted: function() {
+        this.$.composeReplyDialog.close();
+      },
+      _userReplyCanceled: function() {
+        this.$.composeReplyDialog.close();
+      },
     });
   </script>
 </dom-module>

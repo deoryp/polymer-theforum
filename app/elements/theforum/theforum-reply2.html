@@ -107,7 +107,7 @@
         // check it.
       },
       _hasOwnership: function(user, reply) {
-        if (this.user && this.reply) {
+        if (user && reply) {
           return (this.user._id === this.reply.author.id);
         }
         return false;

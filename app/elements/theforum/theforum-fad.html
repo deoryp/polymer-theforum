@@ -60,6 +60,12 @@
         }
         return false;
       },
+      show: function() {
+        this.$.compose.hidden = false;
+      },
+      hide: function() {
+        this.$.compose.hidden = true;
+      },
       _composePost: function() {
         this.$.composePostDialog.open();
         this.composable = false;
