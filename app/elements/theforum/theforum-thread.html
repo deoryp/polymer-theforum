@@ -3,72 +3,154 @@
 <dom-module id="theforum-thread">
   <style include="theforum-theme"></style>
   <style>
-    .replies {
+    :host > paper-card {
+      min-width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    :host {
+      --paper-card-header-text: {
+        padding-bottom: 0px;
+      };
+    }
+    
+    .author > img, img.author {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    img.ghost {
+      border-radius: 50%;
+      border-radius: 50%;
+      border-color: #9E9E9E;
+      border: dashed;
       border-width: 1px;
-      border-color: #eaeaea;
-      border-bottom-color: #eaeaea;
-      border-bottom-style: solid;
-      margin-top: 5px;
-      margin-bottom: 10px;
+      opacity: .75;
+    }
+    span.ghost {
+      font-size: .8em;
+      color: #9E9E9E;
+      margin: 10px;
+    }
+    paper-menu-button {
+      padding: 0px;
+      padding-left: 5px;
+    }
+    
+    paper-icon-button.ghost {
+      color: #9E9E9E;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+    }
+    
+    div.author {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+    }
+    div.author > span {
+      font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+      margin: 10px;
+      font-size: .8em;
+    }
+  
+    div.author > span.name {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      font-weight: bold;
+    }
+    
+    div.author > span.date {
+      font-size: .65em;
+    }
+
+    div.author > iron-icon {
+      color: #9E9E9E;
+      --iron-icon-height: 16px;
+      --iron-icon-width: 16px;
+    }
+  </style>
+  <style is="custom-style">
+    iron-icon.heading-right {
+      color: #9E9E9E;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
+    
+    .list {
+      padding-top: 12px;
+      background-color: white;
     }
   </style>
   <template>
-    <paper-material animated elevation="{{elevation}}" class="thread" 
+    <paper-dialog
+        id="composeReplyDialog"
+        on-iron-overlay-opened="_dialogOpened"
+        on-iron-overlay-closed="_dialogClosed"
+        modal>
+        <theforum-reply-compose
+            title="[[thread.title]]"
+            topic="[[thread.topic]]"
+            thread="[[thread._id]]"
+            user="[[user]]"
+            on-replied="_userReplyPosted"
+            on-canceled="_userReplyCanceled"></theforum-reply-compose>
+    </paper-dialog>
+
+    <paper-card animated
+        heading="{{thread.title}}"
+        elevation="{{elevation}}"
         on-mouseover='onHovered' 
         on-mouseout='onUnhovered'>
-      <h2>{{thread.title}}</h2>
-      <theforum-post post="{{thread}}" class="post" show="{{opened}}"></theforum-post>
-      <iron-collapse opened="{{opened}}">
-        <div class="replies">
+      <iron-icon class="heading-right" icon="star" hidden$="{{!fresh}}"></iron-icon>
+      <div class="card-content">
+        <div class="author">
+          <img src="{{thread.author.photo}}" alt="{{thread.author.name}}">
+          <span id="author-name" class="name flex">{{thread.author.handle}}</span>
+          <span id="author-at" class="date">{{prettyDate(thread.created)}}
+            <template is="dom-if" if="[[_hasOwnership(user, thread)]]">
+              <paper-menu-button horizontal-align="right">
+                <paper-icon-button icon="more-vert" class="ghost dropdown-trigger" alt="edit"></paper-icon-button>
+                <paper-menu class="dropdown-content">
+                  <paper-item>Edit</paper-item>
+                  <paper-item>Delete</paper-item>
+                </paper-menu>
+              </paper-menu-button>
+            </template>
+          </span>
+        </div>
+
+        <div class="body">
+          <marked-element markdown="[[thread.markdown]]">
+            <div class="markdown-html"></div>
+          </marked-element>
+        </div>
+      
+        <div role="listbox">
           <template is="dom-repeat" items="{{thread.reply}}">
-            <theforum-reply reply="{{item}}"></theforum-reply>
+            <theforum-reply user="[[user]]" reply="[[item]]"></theforum-reply>
           </template>
         </div>
-        <theforum-reply-compose
-            topic="{{thread.topic}}"
-            thread="{{thread._id}}"
-            user="{{user}}"></theforum-reply-compose>
-      </iron-collapse>
-    </paper-material>  
+      </div>
+      <div class="card-actions reply layout horizontal" on-click="_composeReply">
+        <img class="author ghost" src="[[user.photo]]" alt="{{user.handle}}">
+        <span class="ghost">Add a comment...</span>
+      </div>
+    </paper-card>
   </template>
   <script>
-  
-  // neat.
-  
-  var HighlightBehavior = {
-
-    properties: {
-      isHighlighted: {
-        type: Boolean,
-        value: false,
-        notify: true,
-        observer: '_highlightChanged'
-      }
-    },
-  
-    listeners: {
-      click: '_toggleHighlight'
-    },
-  
-    created: function() {
-//      console.log('Highlighting for ', this, 'enabled!');
-    },
-
-    _toggleHighlight: function() {
-      this.isHighlighted = !this.isHighlighted;
-    },
-  
-    _highlightChanged: function() {
-      this.classList.add('highlight');
-      this.async(function() {
-        this.classList.remove('highlight');
-      }, 300);
-    }
-  };
-  
+  /* globals moment */
   Polymer({
       is: 'theforum-thread',
-      behaviors: [HighlightBehavior],
       properties: {
         user: {
           type: Object,
@@ -82,27 +164,40 @@
       elevation: 1,
       onHovered: function() {
         this.elevation = 3;
+        return true;
       },
       onUnhovered: function() {
         this.elevation = 1;
+        return true;
       },
       _threadChanged: function() {
         // check it.
-      }
+      },
+      _hasOwnership: function(user, thread) {
+        if (user && thread) {
+          return (this.user._id === this.thread.author.id);
+        }
+        return false;
+      },
+      prettyDate: function(date) {
+        date = new Date(date);
+        return moment(date).fromNow();
+      },
+      _composeReply: function() {
+        this.$.composeReplyDialog.open();
+      },
+      _dialogOpened: function() {
+        console.log('opened.');
+      },
+      _dialogClosed: function() {
+        console.log('closed.');
+      },
+      _userReplyPosted: function() {
+        this.$.composeReplyDialog.close();
+      },
+      _userReplyCanceled: function() {
+        this.$.composeReplyDialog.close();
+      },
     });
   </script>
 </dom-module>
-
-
-
-<!-- 
-
-compose a message:
-
-a thread holds a post and replies.
-
-a post is an author, title, a time and a message
-
-a reply is an author, and a time
-
--->

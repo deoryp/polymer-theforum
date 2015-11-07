@@ -3,6 +3,10 @@
 <dom-module id="theforum-reply">
   <style include="theforum-theme"></style>
   <style>
+  
+    paper-item {
+      padding-left: 0px;
+    }
     img.author {
       width: 32px;
       height: 32px;
@@ -24,6 +28,7 @@
       font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
       margin: 0px 10px 0px 10px;
       font-size: .8em;
+      line-height: .8em;
     }
   
     div.author > span.name {
@@ -39,43 +44,53 @@
       font-size: .65em;
     }
   
-    div.author > span.fresh {
-      font-weight: bold;
-    }
-
-    div.author > iron-icon {
-      color: #9E9E9E;
-      --iron-icon-height: 16px;
-      --iron-icon-width: 16px;
-    }
-    
     .markdown-html p {
       margin-left: 10px;
       margin-top: 2px;
     }
+    paper-menu-button {
+      padding: 0px;
+      padding-left: 5px;
+    }
     
+    paper-icon-button.ghost {
+      color: #9E9E9E;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+    }
   </style>
   <template>
-    <div class="horizontal layout">
-      <div>
-        <img class="author" src="{{reply.author.photo}}" alt="{{reply.author.name}}">
-      </div>
-      <div class="flex">
-        <div class="vertical layout">
-          <div class="author">
-            <span id="author-name" class="name">{{reply.author.handle}}</span>
-            <span id="author-at" class="date">{{prettyDate(reply.created)}}</span> 
-            <iron-icon icon="star" hidden$="{{!fresh}}"></iron-icon>
-            <iron-icon icon="b" hidden$="{{fresh}}"></iron-icon>
+    <paper-item>
+      <div class="horizontal layout flex">
+        <div>
+          <img class="author" src="{{reply.author.photo}}" alt="{{reply.author.name}}">
+        </div>
+        <div class="flex">
+          <div class="vertical layout">
+            <div class="author">
+              <span id="author-name" class="name">{{reply.author.handle}}</span>
+              <span id="author-at" class="date">{{prettyDate(reply.created)}}
+                <template is="dom-if" if="{{_hasOwnership(user, reply)}}">
+                  <paper-menu-button horizontal-align="right">
+                    <paper-icon-button icon="build" class="ghost dropdown-trigger" alt="edit"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                      <paper-item>Edit</paper-item>
+                      <paper-item>Delete</paper-item>
+                    </paper-menu>
+                  </paper-menu-button>
+                </template>
+              </span> 
+            </div>
+            <div class="reply">
+              <marked-element markdown="{{reply.markdown}}">
+                <div class="markdown-html"></div>
+              </marked-element>
+            </div>
           </div>
-          <div class="reply">
-            <marked-element markdown="{{reply.markdown}}">
-              <div class="markdown-html"></div>
-            </marked-element>
-          </div>
+        </div>
       </div>
-      
-    </div>
+    </paper-item>
     
   </template>
   <script>
@@ -83,22 +98,23 @@
   Polymer({
       is: 'theforum-reply',
       properties: {
+        user: {
+          type: Object,
+          notify: true
+        },
         reply: {
           type: Object,
           observer: '_replyChanged'
         },
-        fresh: {
-          type: Boolean,
-          value: false,
-          observer: '_freshChanged'
-        }
       },
       _replyChanged: function() {
         // check it.
       },
-      _freshChanged: function(newValue) {
-        this.toggleClass('fresh', newValue, this.$['author-name']);
-        this.toggleClass('fresh', newValue, this.$['author-at']);
+      _hasOwnership: function(user, reply) {
+        if (user && reply) {
+          return (this.user._id === this.reply.author.id);
+        }
+        return false;
       },
       prettyDate: function(date) {
         date = new Date(date);
