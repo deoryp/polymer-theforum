@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="theforum-thread2">
+<dom-module id="theforum-panel">
   <style include="theforum-theme"></style>
   <style>
     :host > paper-card {
@@ -100,12 +100,22 @@
             on-canceled="_userReplyCanceled"></theforum-reply-compose>
     </paper-dialog>
     
+    
+    <paper-material elevation="1" style="margin-bottom: 0px;">
+      <content selector=".body"></content>
+    </paper-material>
+    <paper-material elevation="1" style="margin-top: 0px;">
+      Here here here
+    </paper-material>
+    
+    
     <paper-card animated
         heading="{{thread.title}}"
         elevation="{{elevation}}"
         on-mouseover='onHovered' 
         on-mouseout='onUnhovered'>
       <iron-icon class="heading-right" icon="star" hidden$="{{!fresh}}"></iron-icon>
+      
       
       <paper-item class="author">
         <img src="{{thread.author.photo}}" alt="{{thread.author.name}}">
@@ -124,6 +134,8 @@
         </span>
         
       </paper-item>
+
+
 
       <paper-item class="body">
         <marked-element markdown="[[thread.markdown]]">
@@ -144,7 +156,7 @@
   <script>
   /* globals moment */
   Polymer({
-      is: 'theforum-thread2',
+      is: 'theforum-panel',
       properties: {
         user: {
           type: Object,
