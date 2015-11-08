@@ -14,14 +14,6 @@
     }
   </style>
   <template>
-    <theforum-cookie id="cookie"></theforum-cookie>
-    <iron-ajax
-        id="ajax"
-        url="{{_createPostUrl(topic)}}"
-        method="POST"
-        headers='{{_headers()}}'
-        handle-as="json"
-        on-response="_handleResponse"></iron-ajax>
     <div class="horizontal end-justified layout">
       <paper-icon-button
           icon="close"
@@ -30,6 +22,7 @@
     <paper-input
         id="titleText"
         class="title"
+        on-focus="_onInput"
         on-input="_onInput"
         label="Title"></paper-input>
     <div class="horizontal layout start">
@@ -39,7 +32,7 @@
           class="flex center"
           rows="8"
           max-rows="8"
-          on-focus="_onFocus"
+          on-focus="_onInput"
           on-input="_onInput"
           label="omg..."></paper-textarea>
     </div>
@@ -48,8 +41,8 @@
           icon="create"
           on-click="_post"
           disabled$="{{!hasContent}}"
-          hidden$="{{!_postable(isWorking, hadSuccess, hadError)}}"></paper-icon-button>
-      <paper-spinner active hidden$="{{!isWorking}}"></paper-spinner>
+          hidden$="{{!_postable(hadSuccess, hadError)}}"></paper-icon-button>
+<!--      <paper-spinner active hidden$="{{!isWorking}}"></paper-spinner> -->
       <iron-icon icon="done" hidden$="{{!hadSuccess}}"></iron-icon>
       <iron-icon icon="error" hidden$="{{!hadError}}"></iron-icon>
     </div>
@@ -63,10 +56,6 @@
       
       properties: {
         hasContent: {
-          type: Boolean,
-          value: false
-        },
-        isWorking: {
           type: Boolean,
           value: false
         },
@@ -84,50 +73,24 @@
           notify: true
         }
       },
-      _postable: function(working, done, error) {
-        if (working || done || error) {
+
+      _postable: function(done, error) {
+        if (done || error) {
           return false;
         }
         return true;
       },
-      _createPostUrl: function(topic) {
-        return '/api/thread/' + topic;
-      },
-      _headers: function() {
-        var token = this.$.cookie.token;
-        return {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json'
-        };
-      },
-      _handleResponse: function(e) {
-        
-        var p1 = new Promise(function(resolve, reject) {
-          if (true) {
-            resolve(1);
-          } else {
-            reject(1);
-          }
-        });
-        p1.then(function(val) {
-          console.log('p1 resolved ' + val);
-        }).catch(function(reason) {
-          console.log('Handle rejected promise ('+reason+') here.');
-        });
+
+      reset: function() {
         this.$.titleText.value = '';
         this.$.bodyText.value = '';
-        this.isWorking = false;
         this.hadSuccess = true;
         this.hadError = false;
         this.async(function() {
           this.hadSuccess = false;
-        }, 2000);
-        this.async(function() {
-          this.fire('posted', e.detail.response);
-        });
+        }, 1000);
       },
-      _onFocus: function() {
-      },
+
       _onInput: function() {
         if (this.$.titleText && this.$.bodyText &&
               this.$.titleText.value && this.$.bodyText.value) {
@@ -135,18 +98,30 @@
               this.$.titleText.value.length > 0 &&
               this.$.bodyText.value.length > 0
           );
+        } else {
+          this.hasContent = false;
         }
+        console.log(this.hasContent);
       },
+
       _post: function() {
+        var that = this;
         this.hadSuccess = false;
         this.hadError = false;
-        this.isWorking = true;
-        this.$.ajax.body = JSON.stringify({
-          title: this.$.titleText.value,
-          markdown: this.$.bodyText.value
+        this.async(function() {
+          that.fire('thread-create', {
+            topic: that.topic,
+            title: that.$.titleText.value,
+            markdown: that.$.bodyText.value
+          });
         });
-        this.$.ajax.generateRequest();
+        this.async(function() {
+          console.log('omgomg');
+          this.fire('posted'); // TODO:: need to figure out how to do this the correct way. 
+          this.reset();
+        });
       },
+
       _cancel: function() {
         console.log('cancel post');
         this.async(function() {

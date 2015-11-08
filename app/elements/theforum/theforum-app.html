@@ -165,7 +165,8 @@
 
       listeners: {
         'thread' : '_thread',
-        'thread-delete': '_deleteThread'
+        'thread-create': '_createThread',
+        'thread-delete': '_deleteThread',
       },
 
       ready: function() {
@@ -177,11 +178,22 @@
         console.log(e);
       },
 
+      _createThread: function(e) {
+        var that = this;
+        console.log('_createThread... ');
+        console.log(e.detail);
+        this.$.be.createThread(e.detail, function(r) {
+          console.log('Callback... ');
+          console.log(r);
+          that.$['topic-' + e.detail.topic].refresh();
+        });
+      },
+
       _deleteThread: function(e) {
         var that = this;
         console.log('_deleteThread... ');
         console.log(e.detail);
-        this.$.be.deleteThread(e.detail.topic, e.detail.threadId, function(r) {
+        this.$.be.deleteThread(e.detail, function(r) {
           console.log('Callback... ');
           console.log(r);
           that.$['topic-' + e.detail.topic].refresh();

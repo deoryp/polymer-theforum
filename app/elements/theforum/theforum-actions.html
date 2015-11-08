@@ -29,40 +29,40 @@
           'Content-Type': 'application/json'
         };
       },
-      createThread: function(topic, title, markdown, callback) {
+      createThread: function(detail, callback) {
         var that = this;
         if (this.pending) {
           callback({success:false, message:'actionPending'});
         }
         this.pending = true;
-        this.$.ajax.url = '/api/thread/' + topic;
+        this.$.ajax.url = '/api/thread/' + detail.topic;
         this.$.ajax.method = 'POST';
         this.$.ajax.body = JSON.stringify({
-          title: title,
-          markdown: markdown
+          title: detail.title,
+          markdown: detail.markdown
         });
         
         this.$.ajax.addEventListener('response', function(event) {
           that.pending = false;
-          that.$.toast.text = 'Thread created for ' + topic +'.';
+          that.$.toast.text = 'Thread created for ' + detail.topic +'.';
           that.$.toast.show();
           callback(event);
         });
         this.$.ajax.generateRequest();
         this.$.toast.show();
       },
-      deleteThread: function(topic, threadId, callback) {
+      deleteThread: function(detail, callback) {
         var that = this;
         if (this.pending) {
           callback({success:false, message:'actionPending'});
         }
         this.pending = true;
-        this.$.ajax.url = '/api/thread/' + topic + '/' + threadId;
+        this.$.ajax.url = '/api/thread/' + detail.topic + '/' + detail.threadId;
         this.$.ajax.method = 'DELETE';
         this.$.ajax.body = '';
         this.$.ajax.addEventListener('response', function(event) {
           that.pending = false;
-          that.$.toast.text = 'Thread deleted out of ' + topic +'.';
+          that.$.toast.text = 'Thread deleted out of ' + detail.topic +'.';
           that.$.toast.show();
           callback(event);
         });
