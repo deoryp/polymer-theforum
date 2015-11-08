@@ -153,6 +153,7 @@
     </paper-drawer-panel>
     
     <paper-toast id="toast1" text="This is a toast!"></paper-toast>
+    <theforum-actions id="be"></theforum-actions>
      
   </template>
   <script>
@@ -160,6 +161,31 @@
       is: 'theforum-app',
       properties: {
         
+      },
+
+      listeners: {
+        'thread' : '_thread',
+        'thread-delete': '_deleteThread'
+      },
+
+      ready: function() {
+        
+      },
+
+      _thread: function(e) {
+        console.log('thread?');
+        console.log(e);
+      },
+
+      _deleteThread: function(e) {
+        var that = this;
+        console.log('_deleteThread... ');
+        console.log(e.detail);
+        this.$.be.deleteThread(e.detail.topic, e.detail.threadId, function(r) {
+          console.log('Callback... ');
+          console.log(r);
+          that.$['topic-' + e.detail.topic].refresh();
+        });
       },
 
       _refreshTopic: function(e) {

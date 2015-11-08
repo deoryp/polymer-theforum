@@ -4,8 +4,8 @@
 TODO:: look at : http://jsfiddle.net/bistri/cyc62/
 https://github.com/webrtc/samples/tree/gh-pages/src/content/datachannel/basic
 
-[ ] Stop using paper-item for interactive lists.
-[ ] create reply
+[x] Stop using paper-item for interactive lists.
+[x] create reply
 [x] Create new post
 [ ] mark seen
 [ ] fresh list

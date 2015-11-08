@@ -73,7 +73,10 @@
               <span id="author-at" class="date">{{prettyDate(reply.created)}}
                 <template is="dom-if" if="{{_hasOwnership(user, reply)}}">
                   <paper-menu-button horizontal-align="right">
-                    <paper-icon-button icon="build" class="ghost dropdown-trigger" alt="edit"></paper-icon-button>
+                    <paper-icon-button 
+                        icon="more-vert"
+                        class="ghost dropdown-trigger"
+                        alt="edit"></paper-icon-button>
                     <paper-menu class="dropdown-content">
                       <paper-item>Edit</paper-item>
                       <paper-item>Delete</paper-item>

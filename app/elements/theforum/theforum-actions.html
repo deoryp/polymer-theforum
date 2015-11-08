@@ -1,0 +1,73 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-actions">
+  <template>
+    <theforum-cookie id="cookie"></theforum-cookie>
+    <iron-ajax
+        id="ajax"
+        headers='{{_headers()}}'
+        handle-as="json"
+        on-response="_handleResponse"></iron-ajax>
+    <paper-toast id="toast" text="This is a toast!"></paper-toast>
+  </template>
+  <script>
+
+    Polymer({
+      is: 'theforum-actions',
+      
+      properties: {
+        pending: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      _headers: function() {
+        var token = this.$.cookie.token;
+        return {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        };
+      },
+      createThread: function(topic, title, markdown, callback) {
+        var that = this;
+        if (this.pending) {
+          callback({success:false, message:'actionPending'});
+        }
+        this.pending = true;
+        this.$.ajax.url = '/api/thread/' + topic;
+        this.$.ajax.method = 'POST';
+        this.$.ajax.body = JSON.stringify({
+          title: title,
+          markdown: markdown
+        });
+        
+        this.$.ajax.addEventListener('response', function(event) {
+          that.pending = false;
+          that.$.toast.text = 'Thread created for ' + topic +'.';
+          that.$.toast.show();
+          callback(event);
+        });
+        this.$.ajax.generateRequest();
+        this.$.toast.show();
+      },
+      deleteThread: function(topic, threadId, callback) {
+        var that = this;
+        if (this.pending) {
+          callback({success:false, message:'actionPending'});
+        }
+        this.pending = true;
+        this.$.ajax.url = '/api/thread/' + topic + '/' + threadId;
+        this.$.ajax.method = 'DELETE';
+        this.$.ajax.body = '';
+        this.$.ajax.addEventListener('response', function(event) {
+          that.pending = false;
+          that.$.toast.text = 'Thread deleted out of ' + topic +'.';
+          that.$.toast.show();
+          callback(event);
+        });
+        this.$.ajax.generateRequest();
+      }
+    });
+  </script>
+</dom-module>
