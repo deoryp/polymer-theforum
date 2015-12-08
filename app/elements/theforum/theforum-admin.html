@@ -1,0 +1,163 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-admin">
+  <style include="theforum-theme"></style>
+  <style is="custom-style">
+    .list {
+      padding-top: 12px;
+      background-color: white;
+      display: inline-block;
+      width: calc(97.33% - 32px);
+      margin: 12px;
+      @apply(--shadow-elevation-2dp);
+    }
+    h4 {
+      margin-left: 24px;
+    }
+  </style>
+  <template>
+    <theforum-cookie id="cookie"></theforum-cookie>
+    <iron-ajax id="ajaxUsers"
+        url="/api/users"
+        handle-as="json"
+        on-response="handleUsers"
+        headers="{{_headers()}}"></iron-ajax>
+    <iron-ajax id="ajaxInvites"
+        url="/api/invite"
+        handle-as="json"
+        on-response="handleInvites"
+        headers="{{_headers()}}"></iron-ajax>
+    
+    <h1>Admin</h1>
+    <div class="layout">
+      <div>
+        <h4>Users</h4>
+        <div class="list" role="listbox">
+          <template is="dom-repeat" items="{{users}}">
+            <paper-item>
+              <iron-icon icon="face" item-icon></iron-icon>
+              <span class="flex"> [[item.email]]</span>
+              <span class="flex"> [[item.role]]</span>
+              <paper-icon-button raised icon="delete"
+                  data-userid="[[item.id]]"
+                  data-email="[[item.email]]"
+                  on-click="_onDelete"></paper-icon-button>
+            </paper-item>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <h4>Invites</h4>
+        <div class="list" role="listbox">
+          <template is="dom-repeat" items="{{invites}}">
+            <paper-item>
+              <iron-icon icon="face" item-icon></iron-icon>
+              <span class="flex"> [[item.email]]</span>
+              <span class="flex"> [[item.role]]</span>
+              <paper-icon-button raised icon="delete"
+                  data-userid="[[item.id]]"
+                  data-email="[[item.email]]"
+                  on-click="_onDeleteInvite"></paper-icon-button>
+            </paper-item>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <h4>Invite</h4>
+        <paper-item>
+          <paper-input id="newEmail" class="flex" label="Email"></paper-input>
+          <paper-input id="newRole" class="flex" label="Role"></paper-input>
+          <paper-button raised on-click="_onCreate">Invite</paper-button>
+        </paper-item>
+      </div>
+    </div>
+    
+    <paper-dialog id="dialog" modal on-iron-overlay-closed="_dialogClosed">
+      <div class="horizontal end-justified layout">
+        <paper-icon-button icon="close" dialog-dismiss></paper-icon-button>
+      </div>
+      <h2>Act on this?</h2>
+      <paper-dialog-scrollable>
+        Email: [[dialog.email]]
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm>[[dialog.action]]</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+
+  Polymer({
+    is: 'theforum-admin',
+    
+    properties: {
+      dialog: {
+        type:Object,
+        value: {action:'', email:'test'},
+        notify: true
+      }
+    },
+    
+    load: function() {
+       this.$.ajaxUsers.generateRequest();
+       this.$.ajaxInvites.generateRequest();
+    },
+    _headers: function() {
+      var token = this.$.cookie.token;
+      return {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      };
+    },
+    _onDelete: function(e) {
+      this.dialog = {
+        action: 'delete', 
+        userId: e.target.dataUserid,
+        email: e.target.dataEmail
+      };
+      this.$.dialog.open();
+      console.log('here');
+    },
+    _onDeleteInvite: function(e) {
+      console.log('todo');
+    },
+    _onCreate: function() {
+      var that = this;
+      if (this.$.newEmail && this.$.newRole &&
+          this.$.newEmail.value.length > 0 && this.$.newRole.value.length > 0) {
+        this.async(function() {
+          that.fire('invite-create', {
+            email: that.$.newEmail.value,
+            role: that.$.newRole.value
+          });
+        });
+      }
+    },
+    handleUsers: function(e) {
+      this.users = e.detail.response;
+    },
+    handleInvites: function(e) {
+      this.invites = e.detail.response;
+    },
+    _dialogClosed: function(e) {
+      var that = this;
+      if (e.detail.confirmed) {
+        this.async(function() {
+          that.fire('invite-delete', {
+            userId: that.dialog.userId,
+            email: that.dialog.email
+          });
+          that.dialog = {};
+        });
+      }
+    }
+    
+  });
+  </script>
+</dom-module>

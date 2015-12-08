@@ -36,6 +36,11 @@
           value: false,
           observer: '_authenticatedChanged'
         },
+        admin: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
         initialized: {
           type: Boolean,
           value: false,
@@ -44,6 +49,12 @@
       },
       isAuthenticated: function() {
         return this.authenticated;
+      },
+      isAdmin: function() {
+        if (typeof this.user !== 'undefined' && typeof this.user.role !== 'undefined') {
+          return this.user.role === 'admin';
+        }
+        return false;
       },
       _headers: function() {
         var token = this.$.cookie.token;
@@ -56,6 +67,7 @@
         this.initialized = true;
         this.set('authenticated', (typeof this.user !== 'undefined'));
         this.authenticated = (typeof this.user !== 'undefined');
+        this.admin = this.isAdmin();
       },
       _authenticatedChanged: function(newValue) {
         console.log('Auth: ' + newValue);

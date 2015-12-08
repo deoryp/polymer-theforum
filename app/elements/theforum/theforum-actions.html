@@ -29,6 +29,66 @@
           'Content-Type': 'application/json'
         };
       },
+
+      createInvite: function(detail, callback) {
+        var that = this;
+        if (this.pending) {
+          callback({success:false, message:'actionPending'});
+        }
+        this.pending = true;
+        this.$.ajax.url = '/api/invite';
+        this.$.ajax.method = 'POST';
+        this.$.ajax.body = JSON.stringify({
+          email: detail.email,
+          role: detail.role
+        });
+        
+        this.$.ajax.addEventListener('response', function(event) {
+          that.pending = false;
+          that.$.toast.text = 'User created for ' + detail.email +'.';
+          that.$.toast.show();
+          callback(event);
+        });
+        this.$.ajax.generateRequest();
+        this.$.toast.show();
+      },
+      
+      deleteInvite: function(detail, callback) {
+        var that = this;
+        if (this.pending) {
+          callback({success:false, message:'actionPending'});
+        }
+        this.pending = true;
+        this.$.ajax.url = '/api/invite/' + detail.userId;
+        this.$.ajax.method = 'DELETE';
+        this.$.ajax.body = '';
+        this.$.ajax.addEventListener('response', function(event) {
+          that.pending = false;
+          that.$.toast.text = 'User ' + detail.email + ' deleted.';
+          that.$.toast.show();
+          callback(event);
+        });
+        this.$.ajax.generateRequest();
+      },
+      
+      deleteUser: function(detail, callback) {
+        var that = this;
+        if (this.pending) {
+          callback({success:false, message:'actionPending'});
+        }
+        this.pending = true;
+        this.$.ajax.url = '/api/users/' + detail.userId;
+        this.$.ajax.method = 'DELETE';
+        this.$.ajax.body = '';
+        this.$.ajax.addEventListener('response', function(event) {
+          that.pending = false;
+          that.$.toast.text = 'User ' + detail.email + ' deleted.';
+          that.$.toast.show();
+          callback(event);
+        });
+        this.$.ajax.generateRequest();
+      },
+
       createThread: function(detail, callback) {
         var that = this;
         if (this.pending) {
@@ -51,6 +111,7 @@
         this.$.ajax.generateRequest();
         this.$.toast.show();
       },
+
       deleteThread: function(detail, callback) {
         var that = this;
         if (this.pending) {
