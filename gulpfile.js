@@ -107,6 +107,8 @@ gulp.task('elements', function() {
 
 // Lint JavaScript
 gulp.task('lint', function() {
+});
+gulp.task('lint2', function() {
   return gulp.src([
       'app/scripts/**/*.js',
       'app/elements/**/*.js',
