@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-rolodex">
+  <style>
+    img.user {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+  </style>
+  <template>
+    <theforum-cookie id="cookie"></theforum-cookie>
+    <iron-ajax
+        auto
+        url="/api/users"
+        handle-as="json"
+        on-response="handleUsers"
+        headers='{{_headers()}}'
+        debounce-duration="300"></iron-ajax>
+
+    <div class="layout horizontal flex center">
+      <h1 class="flex">Rolodex</h1>
+      <h1><paper-icon-button icon="file-download" on-tap="download"></paper-icon-button></h1>
+    </div>
+
+    <div class="layout">
+      <div>
+          <div class="list" role="listbox">
+            <template is="dom-repeat" items="{{users}}">
+            
+              <theforum-rolocard user="[[item]]"></theforum-rolocard>
+            
+            </template>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="vertical center-justified layout">
+      <h4>Update</h4>
+
+      <div class="vertical-section">
+        <paper-input label="Address Line 1" value="{{user.contact.address1}}"></paper-input>
+        <paper-input label="Address Line 2 (optional)" value="{{user.contact.address2}}"></paper-input>
+        <div class="layout horizontal">
+          <paper-input class="flex" label="City" value="{{user.contact.city}}"></paper-input>
+          <span>&nbsp;</span>
+          <paper-input label="State" value="{{user.contact.state}}"></paper-input>
+          <span>&nbsp;</span>
+          <paper-input label="Zip Code" value="{{user.contact.zip}}"></paper-input>
+        </div>
+        <paper-input label="Phone Number" value="{{user.contact.phone}}"></paper-input>
+        <div class="layout horizontal">
+          <span class="flex">&nbsp;</span>
+          <paper-button raised on-click="_onUpdate">Update</paper-button>
+        </div>
+      </div>
+    </div>
+
+  </template>
+  <script>
+  
+  Polymer({
+      is: 'theforum-rolodex',
+      properties: {
+        user: {
+          type: Object,
+          observer: '_defaultContact'
+        },
+        users: {
+          type: Array,
+          value: [],
+        }
+      },
+      _defaultContact: function() {
+        if (typeof this.user === 'undefined') {
+          return;
+        }
+        if (typeof this.user.contact === 'undefined') {
+          this.user.contact = {};
+        }
+      },
+      _headers: function() {
+        var token = this.$.cookie.token;
+        return {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        };
+      },
+      handleUsers: function(response) {
+        var users = response.srcElement.lastResponse;
+        this.users = users;
+      },
+      _onUpdate: function() {
+        
+        console.log(this.user.contact);
+        
+        var that = this;
+        this.async(function() {
+          that.fire('contact-update', that.user.contact);
+        });
+        
+
+        
+      },
+      download: function() {
+        var csvContent = 'data:text/csv;charset=utf-8,';
+
+        var rolos = this.querySelectorAll('theforum-rolocard');
+        for (var i = 0; i < rolos.length; i++) {
+          var rolo = rolos[i];
+          if (i === 0) {
+            csvContent += rolo.csvHeader() + '\n';
+          }
+          csvContent += rolo.csv() + '\n';
+        }
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'theforum-rolodex.csv');
+
+        link.click();
+      }
+    });
+  </script>
+</dom-module>

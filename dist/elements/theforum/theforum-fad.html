@@ -14,7 +14,7 @@
     <paper-fab 
         id="compose"
         on-click="_composePost" 
-        icon="add"
+        icon="{{icon}}"
         hidden$="{{!_showComposePost(authenticated, topic, composable)}}"></paper-fab>
         
     <paper-dialog
@@ -22,11 +22,11 @@
         on-iron-overlay-opened="_dialogOpened"
         on-iron-overlay-closed="_dialogClosed"
         modal>
-        <theforum-post-compose
-            topic="[[topic]]"
-            user="[[user]]"
-            on-posted="_userPostPosted"
-            on-canceled="_userPostCanceled"></theforum-post-compose>
+      <theforum-post-compose
+          topic="[[topic]]"
+          user="[[user]]"
+          on-posted="_userPostPosted"
+          on-canceled="_userPostCanceled"></theforum-post-compose>
     </paper-dialog>
   </template>
   <script>
@@ -40,6 +40,10 @@
         composable: {
           type: Boolean,
           value: true
+        },
+        icon: {
+          type: 'string',
+          value: 'add' //file-download
         }
       },
       _dialogOpened: function() {

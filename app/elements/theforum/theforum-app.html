@@ -152,9 +152,7 @@
             </section>
 
             <section data-route="contacts">
-              <paper-material elevation="1">
-                <h2 class="page-title">This will be the CONTACTS area.</h2>
-              </paper-material>
+              <theforum-rolodex user="{{user}}"></theforum-rolodex>
             </section>
 
             <section data-route="admin">
@@ -185,7 +183,8 @@
         'user-create': '_createUser',
         'user-delete': '_deleteUser',
         'invite-create': '_createInvite',
-        'invite-delete': '_deleteInvite'
+        'invite-delete': '_deleteInvite',
+        'contact-update': '_updateContact'
       },
 
       ready: function() {
@@ -197,8 +196,7 @@
         console.log(e);
       },
 
-      _createUser: function(e) {
-        var that = this;
+      _createUser: function() {
         console.log('_createUser... WRONG.');
       },
 
@@ -207,15 +205,16 @@
         console.log(e.detail);
         this.$.be.deleteUser(e.detail, function(r) {
           // TODO:: look at the response here.
+          console.log(r);
         });
       },
       
       _createInvite: function(e) {
-        var that = this;
         console.log('_createInvite... ');
         console.log(e.detail);
         this.$.be.createInvite(e.detail, function(r) {
           // TODO:: look at the response here.
+          console.log(r);
         });
       },
 
@@ -224,9 +223,10 @@
         console.log(e.detail);
         this.$.be.deleteInvite(e.detail, function(r) {
           // TODO:: look at the response here.
+          console.log(r);
         });
       },
-      
+
       _createThread: function(e) {
         var that = this;
         console.log('_createThread... ');
@@ -248,7 +248,15 @@
           that.$['topic-' + e.detail.topic].refresh();
         });
       },
-
+      
+      _updateContact: function(e) {
+        this.$.be.updateContact(e.detail, function(r) {
+          if (e.callback) {
+            e.callback(r);
+          }
+        });
+      },
+      
       _refreshTopic: function(e) {
         console.log(e.topic);
       },
@@ -259,7 +267,7 @@
         topics.push({route: 'general', href:'/general', icon:'question-answer', title:'General'});
         topics.push({route: 'media', href:'/media', icon:'theaters', title:'Media'});
         topics.push({route: 'events', href:'/events', icon:'event', title:'Events', disabled:true});
-        topics.push({route: 'contacts', href:'/contacts', icon:'communication:contacts', title:'Rolodex', disabled:true});
+        topics.push({route: 'contacts', href:'/contacts', icon:'communication:contacts', title:'Rolodex'});
        return topics;
       },
       unauthenticatedTopics: function() {

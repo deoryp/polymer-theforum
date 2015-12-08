@@ -1,0 +1,173 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="theforum-rolocard">
+  <style>
+    img.user {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+    paper-item {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    iron-icon {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    rolosection {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    paper-card {
+      width: 100%;
+      margin:10px;
+    }
+    paper-textarea {
+      padding-left: 10px;
+    }
+  </style>
+  <template>
+  <paper-card animated elevation="1" on-click="convertToInput">
+    <paper-item>
+      <div class="layout horizontal flex">
+
+        <img class="user" src="{{user.photo}}" alt="{{user.handle}}" hidden$="{{!user.photo}}">
+        <iron-icon icon="face" hidden$="{{user.photo}}"></iron-icon>
+
+        <template is="dom-if" if="{{asText}}">
+          <div class="flex" on-click="somethingelse">
+            <paper-textarea readonly rows="6" value="{{text()}}"></paper-textarea>
+          </div>
+        </template>
+
+        <template is="dom-if" if="{{!asText}}">
+
+        <div class="vertical layout flex rolosection">
+          <div class="layout horizontal flex">
+            <iron-icon icon="empty"></iron-icon>
+            <div><h3>{{user.handle}}</h3></div>
+          </div>
+
+          <template is="dom-if" if="{{hasAddress()}}">
+            <div class="layout horizontal flex rolosection">
+              <iron-icon icon="markunread-mailbox"></iron-icon>
+              <div class="vertical layout flex">
+                <div>{{user.contact.address1}}</div>
+                <div>{{user.contact.address2}}</div>
+                <div>{{user.contact.city}}, {{user.contact.state}} {{user.contact.zip}}</div>
+              </div>
+            </div>
+          </template>
+
+          <div class="layout horizontal flex rolosection">
+            <iron-icon icon="mail"></iron-icon>
+            <div>{{user.email}}</div>
+          </div>
+
+          <template is="dom-if" if="{{hasPhone()}}">
+            <div class="layout horizontal flex rolosection">
+              <iron-icon icon="communication:phone"></iron-icon>
+              <div>{{user.contact.phone}}</div>
+            </div>
+          </div>
+        </template>
+
+        </template>
+      </div>
+    </paper-item>
+  </paper-card>
+  </template>
+  <script>
+  
+  Polymer({
+      is: 'theforum-rolocard',
+      properties: {
+        user: {
+          type: Object
+        },
+        asText: {
+          type: 'boolean',
+          value: false
+        }
+      },
+      convertToInput: function(event) {
+        if (event.srcElement.tagName === 'TEXTAREA') {
+          return;
+        }
+        this.asText = !this.asText;
+      },
+      hasAddress: function() {
+        if (typeof this.user.contact !== 'undefined') {
+          if (this.user.contact.address1 !== null) {
+            return true;
+          }
+          if (this.user.contact.address2 !== null) {
+            return true;
+          }
+          if (this.user.contact.city !== null) {
+            return true;
+          }
+          if (this.user.contact.state !== null) {
+            return true;
+          }
+          if (this.user.contact.zip !== null) {
+            return true;
+          }
+        }
+        return false;
+      },
+      hasPhone: function() {
+        if (typeof this.user.contact !== 'undefined') {
+          if (this.user.contact.phone !== null) {
+            return true;
+          }
+        }
+        return false;
+      },
+      text: function() {
+        return this._text('', '\n');
+      },
+      csvHeader: function() {
+        return 'Name,Address,Email,Phone';
+      },
+      csv: function() {
+        return this._text('"', ',');
+      },
+      _text: function(around, seperator) {
+        var text = '';
+        text += around + this.user.handle + around + seperator;
+
+        text += around;
+        if (typeof this.user.contact !== 'undefined') {
+          if (this.user.contact.address1 !== null) {
+            text += this.user.contact.address1 + '\n';
+          }
+          if (this.user.contact.address2 !== null) {
+            text += this.user.contact.address2 + '\n';
+          }
+          if (this.user.contact.city !== null) {
+            text += this.user.contact.city + ', ';
+          }
+          if (this.user.contact.state !== null) {
+            text += this.user.contact.state + ' ';
+          }
+          if (this.user.contact.zip !== null) {
+            text += this.user.contact.zip;
+          }
+        }
+        text += around + seperator;
+        text += around + this.user.email + around + seperator;
+        text += around;
+        if (typeof this.user.contact !== 'undefined') {
+          if (this.user.contact.phone !== null) {
+            text += this.user.contact.phone;
+          }
+        }
+        text += around + seperator;
+        return text;
+      },
+      
+    });
+  </script>
+</dom-module>

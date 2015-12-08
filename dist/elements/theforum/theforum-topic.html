@@ -14,10 +14,10 @@
         debounce-duration="300"></iron-ajax>
         
     <template is="dom-repeat" items="{{threads}}">
-      <theforum-thread2
+      <theforum-thread
           thread="{{item}}"
           user="{{user}}"
-          on-replied="_userReplied"></theforum-thread2>
+          on-replied="_userReplied"></theforum-thread>
     </template>
 
   </template>

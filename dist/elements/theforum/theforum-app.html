@@ -47,30 +47,38 @@
         <paper-menu
             attr-for-selected="data-route"
             selected="[[route]]">
-          <template is="dom-repeat" items="{{unauthenticatedTopics()}}">
-            <a data-route$="{{item.route}}" 
-                href="{{item.href}}" 
+          <template is="dom-repeat" items="[[unauthenticatedTopics()]]">
+            <a data-route$="[[item.route]]" 
+                href="[[item.href]]" 
                 on-click="onDataRouteClick" 
-                disabled$="{{item.disabled}}"
-                hidden$="{{authenticated}}">
-              <iron-icon icon="{{item.icon}}"></iron-icon>
-              <span>{{item.title}}</span>
+                disabled$="[[item.disabled]]"
+                hidden$="[[authenticated]]">
+              <iron-icon icon="[[item.icon]]"></iron-icon>
+              <span>[[item.title]]</span>
             </a>
           </template>
-          <template is="dom-repeat" items="{{authenticatedTopics()}}">
-            <a data-route$="{{item.route}}" 
-                href="{{item.href}}" 
+          <template is="dom-repeat" items="[[authenticatedTopics()]]">
+            <a data-route$="[[item.route]]" 
+                href="[[item.href]]"
                 on-click="onDataRouteClick" 
-                disabled$="{{item.disabled}}"
-                hidden$="{{!authenticated}}">
-              <iron-icon icon="{{item.icon}}"></iron-icon>
-              <span>{{item.title}}</span>
+                disabled$="[[item.disabled]]"
+                hidden$="[[!authenticated]]">
+              <iron-icon icon="[[item.icon]]"></iron-icon>
+              <span>[[item.title]]</span>
             </a>
           </template>
           <a on-click="logout" 
-              hidden$="{{!authenticated}}">
+              hidden$="[[!authenticated]]">
             <iron-icon icon="account-circle"></iron-icon>
             <span>Logout</span>
+          </a>
+          <a data-route$="admin" 
+              href="/admin" 
+              on-click="onAdminClick" 
+              disabled$="{{!admin}}"
+              hidden$="{{!admin}}">
+            <iron-icon icon="supervisor-account"></iron-icon>
+            <span>Admin</span>
           </a>
         </paper-menu>
       </paper-scroll-header-panel>
@@ -84,7 +92,10 @@
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <theforum-user id="user" user="{{user}}" authenticated="{{authenticated}}"></theforum-user>
+          <theforum-user id="user" 
+              user="{{user}}" 
+              authenticated="{{authenticated}}"
+              admin="{{admin}}"></theforum-user>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -141,9 +152,11 @@
             </section>
 
             <section data-route="contacts">
-              <paper-material elevation="1">
-                <h2 class="page-title">This will be the CONTACTS area.</h2>
-              </paper-material>
+              <theforum-rolodex user="{{user}}"></theforum-rolodex>
+            </section>
+
+            <section data-route="admin">
+              <theforum-admin id="admin"></theforum-admin>
             </section>
 
           </iron-pages>
@@ -153,6 +166,7 @@
     </paper-drawer-panel>
     
     <paper-toast id="toast1" text="This is a toast!"></paper-toast>
+    <theforum-actions id="be"></theforum-actions>
      
   </template>
   <script>
@@ -162,25 +176,99 @@
         
       },
 
+      listeners: {
+        'thread' : '_thread',
+        'thread-create': '_createThread',
+        'thread-delete': '_deleteThread',
+        'user-create': '_createUser',
+        'user-delete': '_deleteUser',
+        'invite-create': '_createInvite',
+        'invite-delete': '_deleteInvite',
+        'contact-update': '_updateContact'
+      },
+
+      ready: function() {
+        
+      },
+
+      _thread: function(e) {
+        console.log('thread?');
+        console.log(e);
+      },
+
+      _createUser: function() {
+        console.log('_createUser... WRONG.');
+      },
+
+      _deleteUser: function(e) {
+        console.log('_deleteUser... ');
+        console.log(e.detail);
+        this.$.be.deleteUser(e.detail, function(r) {
+          // TODO:: look at the response here.
+          console.log(r);
+        });
+      },
+      
+      _createInvite: function(e) {
+        console.log('_createInvite... ');
+        console.log(e.detail);
+        this.$.be.createInvite(e.detail, function(r) {
+          // TODO:: look at the response here.
+          console.log(r);
+        });
+      },
+
+      _deleteInvite: function(e) {
+        console.log('_deleteInvite... ');
+        console.log(e.detail);
+        this.$.be.deleteInvite(e.detail, function(r) {
+          // TODO:: look at the response here.
+          console.log(r);
+        });
+      },
+
+      _createThread: function(e) {
+        var that = this;
+        console.log('_createThread... ');
+        console.log(e.detail);
+        this.$.be.createThread(e.detail, function(r) {
+          console.log('Callback... ');
+          console.log(r);
+          that.$['topic-' + e.detail.topic].refresh();
+        });
+      },
+
+      _deleteThread: function(e) {
+        var that = this;
+        console.log('_deleteThread... ');
+        console.log(e.detail);
+        this.$.be.deleteThread(e.detail, function(r) {
+          console.log('Callback... ');
+          console.log(r);
+          that.$['topic-' + e.detail.topic].refresh();
+        });
+      },
+      
+      _updateContact: function(e) {
+        this.$.be.updateContact(e.detail, function(r) {
+          if (e.callback) {
+            e.callback(r);
+          }
+        });
+      },
+      
       _refreshTopic: function(e) {
         console.log(e.topic);
       },
-      
-      isAuthenticated: function(user) {
-        if (user && user.isAuthenticated) {
-          return user.isAuthenticated();
-        }
-        return false;
-      },
+
       authenticatedTopics: function() {
         var topics = [];
         topics.push({route: 'fresh', href:'/', icon:'home', title:'Home'});
         topics.push({route: 'general', href:'/general', icon:'question-answer', title:'General'});
         topics.push({route: 'media', href:'/media', icon:'theaters', title:'Media'});
         topics.push({route: 'events', href:'/events', icon:'event', title:'Events', disabled:true});
-        topics.push({route: 'contacts', href:'/contacts', icon:'communication:contacts',
-            title:'Rolodex', disabled:true});
-        return topics;
+        topics.push({route: 'contacts', href:'/contacts', icon:'communication:contacts', title:'Rolodex'});
+       return topics;
       },
       unauthenticatedTopics: function() {
         var topics = [];
@@ -194,6 +282,10 @@
         var cookie = document.querySelector('theforum-cookie');
         cookie.removeToken();
         window.location  = '/';
+      },
+      onAdminClick: function() {
+        this.$.admin.load();
+//        onDataRouteClick();
       },
       _userPostPosted: function(e) {
         this.$['topic-' + e.detail.topic].refresh();

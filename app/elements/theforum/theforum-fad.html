@@ -14,7 +14,7 @@
     <paper-fab 
         id="compose"
         on-click="_composePost" 
-        icon="add"
+        icon="{{icon}}"
         hidden$="{{!_showComposePost(authenticated, topic, composable)}}"></paper-fab>
         
     <paper-dialog
@@ -40,6 +40,10 @@
         composable: {
           type: Boolean,
           value: true
+        },
+        icon: {
+          type: 'string',
+          value: 'add' //file-download
         }
       },
       _dialogOpened: function() {
